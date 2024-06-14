@@ -1,17 +1,19 @@
 import React from "react";
-import smile from '../imgs/smile.svg'
-import copy from '../imgs/copy.svg'
-import pizza from '../imgs/pizza.svg'
-import linkedin from '../imgs/linkedin.svg'
-import twitter from '../imgs/twitter.svg'
-import instagram from '../imgs/instagram.svg'
-import facebook from '../imgs/facebook.svg'
-import people from '../imgs/people.svg'
-import Phone from '../imgs/Phone.svg'
-import darrel from '../imgs/darrel.png'
-import savan from '../imgs/savan.png'
-import dianne from '../imgs/dianne.png'
-import kristin from '../imgs/kristin.png'
+import smile from '../../imgs/smile.svg'
+import copy from '../../imgs/copy.svg'
+import pizza from '../../imgs/pizza.svg'
+import linkedin from '../../imgs/linkedin.svg'
+import twitter from '../../imgs/twitter.svg'
+import instagram from '../../imgs/instagram.svg'
+import facebook from '../../imgs/facebook.svg'
+import people from '../../imgs/people.svg'
+import Phone from '../../imgs/Phone.svg'
+import darrel from '../../imgs/darrel.png'
+import savan from '../../imgs/savan.png'
+import dianne from '../../imgs/dianne.png'
+import google_play from '../../imgs/google_play.svg'
+import app_store from '../../imgs/app_store.svg'
+import kristin from '../../imgs/kristin.png'
 
 const data =[
         {
@@ -41,7 +43,7 @@ const data =[
 ]
 const NewsSec: React.FC = () => {
     return (
-        <div className="min-h-screen px-[80px] text-[#21272A]">
+        <div className="h-full px-[80px] text-[#21272A]">
             <section className="text-center mb-[80px]">
                 <h1 className="text-[42px] font-bold mb-[48px]">Лучшие специалисты и эффективная алгоритимизация</h1>
                 <p className=" mb-[48px] text-[18px]">
@@ -123,8 +125,8 @@ const NewsSec: React.FC = () => {
                         Nec massa viverra eget feugiat pellentesque. Feugiat adipiscing massa vitae auctor mi massa. Sodales libero viverra cursus sed duis luctus nulla. In malesuada vulputate pharetra ipsum orci.
                     </p>
                     <div className="flex justify-start space-x-4">
-                        <a href="#" className="bg-black text-white px-4 py-2 rounded">App Store</a>
-                        <a href="#" className="bg-black text-white px-4 py-2 rounded">Google Play</a>
+                        <a href="#" className="bg-black text-white rounded-[7px]"><img src={app_store}/></a>
+                        <a href="#" className="bg-black text-white rounded-[7px]"><img src={google_play}/></a>
                     </div>
                 </div>
             </section>

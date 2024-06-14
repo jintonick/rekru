@@ -88,9 +88,9 @@ const ResumeForm: React.FC = () => {
     const requiredFieldsComplete = name && gender && location;
 
     return (
-        <div className="w-full flex justify-center">
-            <div className="w-full max-w-[1440px] px-[70px] text-[16px]">
-                <header id="main-header" className="flex justify-between items-center my-[30px]">
+        <div className="w-full flex justify-center min-h-screen">
+            <div className="w-full max-w-[1440px] text-[16px]">
+                <header id="main-header" className="flex justify-between items-center mb-[30px]">
                     <div className="flex items-center gap-[10px]">
                         <h1 className="font-bold text-[28px]">Новое резюме</h1>
                         <span className="mt-[9px] text-[#777777]">последние изменения 16:35 4.06.24</span>
@@ -100,23 +100,7 @@ const ResumeForm: React.FC = () => {
                         <button className={`px-[12px] py-[10px] ${requiredFieldsComplete ? 'bg-[#2A5AB8] text-white' : 'bg-gray-400 text-gray-600 cursor-not-allowed'} rounded`} disabled={!requiredFieldsComplete}>Опубликовать</button>
                     </div>
                 </header>
-
-                {isHeaderFixed && (
-                    <div className="fixed bottom-[-20px] left-0 right-0 flex justify-center bg-[#ECECEC] items-center z-50 mb-[20px]">
-                        <div className="w-full max-w-[1440px] flex justify-between px-[70px] py-[15px]">
-                            <div className="flex items-center gap-[10px]">
-                                <h1 className="font-bold text-[28px]">Новое резюме</h1>
-                                <span className="mt-[9px] text-[#777777]">последние изменения 16:35 4.06.24</span>
-                            </div>
-                            <div>
-                                <button className="px-[12px] py-[10px] bg-[#DBDBDB] text-black rounded mr-[15px]">Сохранить изменения</button>
-                                <button className={`px-[12px] py-[10px] ${requiredFieldsComplete ? 'bg-[#2A5AB8] text-white' : 'bg-gray-400 text-gray-600 cursor-not-allowed'} rounded`} disabled={!requiredFieldsComplete}>Опубликовать</button>
-                            </div>
-                        </div>
-                    </div>
-                )}
-
-                <div className="mt-4 p-[30px] grid grid-cols-[2.5fr_1fr] bg-white rounded-[12px] shadow mb-[80px]">
+                <div className="mt-4 grid grid-cols-[2.5fr_1fr] bg-white rounded-[12px] mb-[80px]">
                     <form className="pr-[130px]">
                         <h1 className="text-[28px] font-bold mb-[40px]">Заполните основную информацию</h1>
                         <div className="mb-4">
@@ -367,6 +351,16 @@ const ResumeForm: React.FC = () => {
                         </div>
                     </div>
                 </div>
+                <header id="main-header" className="flex justify-between items-center">
+                    <div className="flex items-center gap-[10px]">
+                        <h1 className="font-bold text-[28px]">Новое резюме</h1>
+                        <span className="mt-[9px] text-[#777777]">последние изменения 16:35 4.06.24</span>
+                    </div>
+                    <div>
+                        <button className="px-[12px] py-[10px] bg-[#DBDBDB] text-black rounded mr-[15px]">Сохранить изменения</button>
+                        <button className={`px-[12px] py-[10px] ${requiredFieldsComplete ? 'bg-[#2A5AB8] text-white' : 'bg-gray-400 text-gray-600 cursor-not-allowed'} rounded`} disabled={!requiredFieldsComplete}>Опубликовать</button>
+                    </div>
+                </header>
             </div>
         </div>
     );

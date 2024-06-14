@@ -1,6 +1,6 @@
 import React from "react";
 import Login_form from "./login_form";
-import Footer from "../layout/footer";
+import Footer from "../../layout/footer";
 import NewsSec from "./news_sec";
 function Main() {
     return(
@@ -10,12 +10,11 @@ function Main() {
                     <div className=" flex justify-center w-full">
                         <Login_form/>
                     </div>
-                    <div className="mt-[120px]">
+                    <div className="mt-[120px] h-full">
                         <NewsSec />
                     </div>
                 </div>
             </div>
-            <Footer />
         </div>
     )
 }

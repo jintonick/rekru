@@ -1,0 +1,21 @@
+@font-face {
+    font-family: 'Graphik-Kinopoisk-LC-Web';
+    src: url('/fonts/Helvetica-Bold.ttf') format('ttf');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Graphik-Kinopoisk-LC-Web';
+    src: url('/fonts/Helvetica-Regular.ttf') format('ttf');
+    font-weight: 500;
+    font-style: normal;
+}
+
+
+@font-face {
+    font-family: 'Graphik-Kinopoisk-LC-Web';
+    src: url('/fonts/Helvetica-Light.ttf') format('ttf');
+    font-weight: 300;
+    font-style: normal;
+}

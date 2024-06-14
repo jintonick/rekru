@@ -1,12 +1,12 @@
 import React, {useState} from "react";
-import list from '../imgs/list.svg'
-import heart from '../imgs/heart.svg'
-import clock from '../imgs/clock.svg'
-import officebuilding from '../imgs/office-building.svg'
-import calendar from '../imgs/calendar.svg'
-import arrdown from '../imgs/arr_down.svg'
-import informationcircle from '../imgs/information-circle.svg'
-import {useAuth} from "../auth/auth_context";
+import list from '../../imgs/list.svg'
+import heart from '../../imgs/heart.svg'
+import clock from '../../imgs/clock.svg'
+import officebuilding from '../../imgs/office-building.svg'
+import calendar from '../../imgs/calendar.svg'
+import arrdown from '../../imgs/arr_down.svg'
+import informationcircle from '../../imgs/information-circle.svg'
+import {useAuth} from "../../auth/auth_context";
 
 interface Company {
     name: string;

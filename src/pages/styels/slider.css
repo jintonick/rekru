@@ -1,0 +1,25 @@
+@import "~slick-carousel/slick/slick.css";
+@import "~slick-carousel/slick/slick-theme.css";
+
+.slider-container {
+    width: 98%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.slick-slide {
+    padding: 0 10px;
+}
+
+.slick-prev:before,
+.slick-next:before {
+    color: black;
+}
+
+.card {
+    height: 210px;
+    width: 305px;
+    background: #fff;
+    border-radius: 4px;
+    text-align: center;
+}

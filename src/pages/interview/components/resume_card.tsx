@@ -1,7 +1,7 @@
 import React from 'react';
-import { Resume } from '../specialists/data2';
-import share from '../../imgs/share.svg';
-import dots_horizontal from '../../imgs/dots-horizontal.svg';
+import { Resume } from '../../specialists/data2';
+import share from '../../../imgs/share.svg';
+import dots_horizontal from '../../../imgs/dots-horizontal.svg';
 
 interface ResumeCardProps {
     resume: Resume;

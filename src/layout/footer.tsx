@@ -1,76 +1,38 @@
 // Footer.tsx
 import React from 'react';
+import google_play from '../imgs/google_play.svg'
+import app_store from '../imgs/app_store.svg'
 
 const Footer: React.FC = () => {
     return (
-        <footer className="bg-black text-white p-8">
-            <div className="container mx-auto">
-                <div className="flex flex-col md:flex-row md:justify-between items-center mb-8">
-                    <div className="mb-4 md:mb-0">
-                        <h1 className="text-2xl font-bold">Rekru</h1>
+        <footer className="bg-white text-black flex justify-center">
+            <div className="max-w-[1440px] w-full px-[70px] py-[50px]">
+                <div className="flex justify-between w-full items-center max-w-[1440px] border-b border-[#C1C7CD] pb-[36px]">
+                    <div className="w-full">
+                        <h1 className="text-[#2A5AB8] text-[36px] font-extrabold">rekru</h1>
                     </div>
-                    <div className="flex items-center">
+                    <div className="flex items-center max-w-[623px] w-full justify-between">
                         <input
                             type="text"
-                            placeholder="Enter your email to get the latest news..."
-                            className="p-2 w-full md:w-auto border border-gray-600 rounded-l-md"
+                            placeholder="Подпишитесь на ежедневную рассылку новостей.."
+                            className="max-w-[447px] p-[10px] w-full h-[48px] bg-[#F2F4F8] rounded-[7px]"
                         />
-                        <button className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-r-md">
-                            Subscribe
+                        <button className="bg-[#2A5AB8] text-white max-w-[160px] h-[48px] w-full  rounded-[7px]">
+                            Подписаться
                         </button>
                     </div>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-                    <div>
-                        <h2 className="font-bold mb-4">Column One</h2>
-                        <ul>
-                            <li>Twenty One</li>
-                            <li>Thirty Two</li>
-                            <li>Fourty Three</li>
-                            <li>Fifty Four</li>
-                        </ul>
+                <div className="flex justify-between items-center w-full pt-[36px]">
+                    <p className="text-[14px]">Rekru 2024. Все права защищены</p>
+                    <div className="flex items-center gap-[10px]">
+                        <a href="#" className="text-[18px] font-bold">Следите за нами</a>
+                        <a href="#"><img src={app_store} alt="App Store" className="h-10" /></a>
+                        <a href="#"><img src={google_play} alt="Google Play" className="h-10" /></a>
                     </div>
-                    <div>
-                        <h2 className="font-bold mb-4">Column Two</h2>
-                        <ul>
-                            <li>Sixty Five</li>
-                            <li>Seventy Six</li>
-                            <li>Eighty Seven</li>
-                            <li>Ninety Eight</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h2 className="font-bold mb-4">Column Three</h2>
-                        <ul>
-                            <li>One Two</li>
-                            <li>Three Four</li>
-                            <li>Five Six</li>
-                            <li>Seven Eight</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h2 className="font-bold mb-4">Column Four</h2>
-                        <div className="flex space-x-2 mb-4">
-                            <img src="/path/to/app-store.png" alt="App Store" className="h-10" />
-                            <img src="/path/to/play-store.png" alt="Play Store" className="h-10" />
-                        </div>
-                        <div>
-                            <h3 className="font-bold">Join Us</h3>
-                            <div className="flex space-x-4 mt-2">
-                                <a href="#" className="text-white"><i className="fab fa-facebook-f"></i></a>
-                                <a href="#" className="text-white"><i className="fab fa-twitter"></i></a>
-                                <a href="#" className="text-white"><i className="fab fa-instagram"></i></a>
-                                <a href="#" className="text-white"><i className="fab fa-linkedin"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="flex flex-col md:flex-row md:justify-between items-center text-gray-500">
-                    <p>Rekru © 2024, All rights reserved.</p>
-                    <div className="flex space-x-4 mt-4 md:mt-0">
-                        <a href="#" className="text-gray-500 hover:text-white">Eleven</a>
-                        <a href="#" className="text-gray-500 hover:text-white">Twelve</a>
-                        <a href="#" className="text-gray-500 hover:text-white">Thirteen</a>
+                    <div className="flex gap-[16px] text-[18px] font-bold">
+                        <a href="#" className="hover:text-black">Правила использования</a>
+                        <a href="#" className="hover:text-black">Соглашение</a>
+                        <a href="#" className="hover:text-black">Подписка</a>
                     </div>
                 </div>
             </div>

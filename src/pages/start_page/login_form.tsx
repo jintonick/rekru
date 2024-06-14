@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import apple from '../imgs/apple.svg';
-import google from '../imgs/google.svg';
-import { useAuth } from '../auth/auth_context';
+import apple from '../../imgs/apple.svg';
+import google from '../../imgs/google.svg';
+import { useAuth } from '../../auth/auth_context';
+import {Button} from "antd";
 
 const LoginForm: React.FC = () => {
     const [email, setEmail] = useState('');
@@ -55,7 +56,7 @@ const LoginForm: React.FC = () => {
                                 <button type="button" className="text-[#001D6C] font-medium">Забыл пароль?</button>
                             </div>
                         </div>
-                        <button type="submit" className="bg-[#2A5AB8] text-white text-[16px] font-medium h-[48px] w-full py-2 rounded-[7px] mb-[20px]">Войти</button>
+                        <Button onClick={handleSubmit} id="submit" className="bg-[#2A5AB8] text-white text-[16px] font-medium h-[48px] w-full py-2 rounded-[7px] mb-[20px]">Войти</Button>
                         <div className="flex gap-[16px]">
                             <button className="w-full flex items-center justify-center gap-[16px] py-2 border-[1px] text-[16px] font-medium border-[#2A5AB8] text-[#2A5AB8] rounded-[7px]">
                                 <img src={google} alt="Google" />

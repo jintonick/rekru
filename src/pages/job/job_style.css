@@ -1,0 +1,35 @@
+.animated-button {
+    transition: background-color 0.1s ease, transform 0.1s ease;
+}
+
+.animated-button:hover {
+    background-color: #2A5AB8; /* Немного темнее синий цвет */
+    transform: scale(1.01);
+    color: white;
+}
+
+.animated-button:active {
+    background-color: #2A5AB8; /* Еще темнее синий цвет */
+    transform: scale(0.99);
+}
+
+.sortable-header {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.sortable-header img {
+    transition: transform 0.3s ease;
+    margin-left: 8px;
+}
+
+.sortable-header.asc img {
+    transform: rotate(0deg);
+}
+
+.sortable-header.desc img {
+    transform: rotate(180deg);
+}
+
+

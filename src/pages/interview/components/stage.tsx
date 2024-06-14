@@ -1,16 +1,27 @@
 import React from 'react';
-import { Stage, Candidate } from './interview';
 import { Button, Input } from 'antd';
-import { EditOutlined, CheckOutlined, CloseOutlined, PlusOutlined } from '@ant-design/icons';
-import arrow_down from '../../imgs/arrow_down.svg';
-import arrow_up from '../../imgs/arrow_up.svg';
+import { EditOutlined, CheckOutlined, CloseOutlined } from '@ant-design/icons';
+import arrow_down from '../../../imgs/arrow_down.svg';
+import arrow_up from '../../../imgs/arrow_up.svg';
 
-interface StageProps {
+interface Candidate {
+    id: number;
+    name: string;
+    status: 'approved' | 'rejected' | 'pending';
+}
+
+interface Stage {
+    id: number;
+    name: string;
+    candidates: Candidate[];
+}
+
+interface StageComponentProps {
     stage: Stage;
+    expandedStage: number | null;
     isEditing: boolean;
     editingStage: number | null;
     stageNameEdit: string;
-    expandedStage: number | null;
     toggleExpandStage: (stageId: number) => void;
     handleEditStage: (stageId: number, name: string) => void;
     handleSaveStageName: (stageId: number) => void;
@@ -19,21 +30,21 @@ interface StageProps {
     setStageNameEdit: (name: string) => void;
 }
 
-const StageComponent: React.FC<StageProps> = ({
-                                                  stage,
-                                                  expandedStage,
-                                                  isEditing,
-                                                  editingStage,
-                                                  stageNameEdit,
-                                                  toggleExpandStage,
-                                                  handleEditStage,
-                                                  handleSaveStageName,
-                                                  handleDeleteStage,
-                                                  handleCandidateStatusChange,
-                                                  setStageNameEdit
-                                              }) => {
+const StageComponent: React.FC<StageComponentProps> = ({
+                                                           stage,
+                                                           expandedStage,
+                                                           isEditing,
+                                                           editingStage,
+                                                           stageNameEdit,
+                                                           toggleExpandStage,
+                                                           handleEditStage,
+                                                           handleSaveStageName,
+                                                           handleDeleteStage,
+                                                           handleCandidateStatusChange,
+                                                           setStageNameEdit
+                                                       }) => {
     return (
-        <div key={stage.id}>
+        <div>
             <div className="flex justify-between items-center border-b-[#DBDBDB] border-b-[1px] py-[20px]">
                 {editingStage === stage.id ? (
                     <div className="flex items-center gap-2">
@@ -43,22 +54,24 @@ const StageComponent: React.FC<StageProps> = ({
                             autoFocus
                         />
                         <Button className="border-none shadow-none" icon={<CheckOutlined />} onClick={() => handleSaveStageName(stage.id)} />
-                        <Button className="border-none shadow-none" icon={<CloseOutlined />} onClick={() => handleEditStage(null)} />
+                        <Button className="border-none shadow-none" icon={<CloseOutlined />} onClick={() => setStageNameEdit('')} />
                     </div>
                 ) : (
                     <div className="flex gap-[8px] items-end">
                         <h3 className="text-[20px] font-bold flex gap-[8px]">{stage.name}</h3>
-                        {!isEditing ?
-                            <h3 className="text-[14px] text-[#C4C4C4] mb-[2px]">{stage.candidates.length} кандитатов</h3>
-                            :
+                        {!isEditing ? (
+                            <h3 className="text-[14px] text-[#C4C4C4] mb-[2px]">{stage.candidates.length} кандидатов</h3>
+                        ) : (
                             <div></div>
-                        }
+                        )}
                     </div>
                 )}
-                {isEditing && stage.id !== 0 ? (
+                {isEditing ? (
                     <div className="flex">
                         <Button className="border-none shadow-none" icon={<EditOutlined />} onClick={() => handleEditStage(stage.id, stage.name)} />
-                        <Button className="border-none shadow-none" icon={<CloseOutlined />} onClick={() => handleDeleteStage(stage.id)} />
+                        {stage.id !== 0 && (
+                            <Button className="border-none shadow-none" icon={<CloseOutlined />} onClick={() => handleDeleteStage(stage.id)} />
+                        )}
                     </div>
                 ) : (
                     <button onClick={() => toggleExpandStage(stage.id)} className="w-[20px] h-[20px] transition-transform duration-300">
@@ -95,3 +108,7 @@ const StageComponent: React.FC<StageProps> = ({
 }
 
 export default StageComponent;
+
+
+
+
