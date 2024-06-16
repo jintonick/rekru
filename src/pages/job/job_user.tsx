@@ -124,7 +124,6 @@ const JobUser: React.FC = () => {
 
                 <div className="space-y-4">
                     {isLoading && <div>Loading...</div>}
-                    {error && <div>Error loading jobs</div>}
                     {paginatedJobs.map((job: Job, index: number) => (
                         <JobCard key={index} job={job} />
                     ))}

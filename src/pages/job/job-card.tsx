@@ -1,9 +1,22 @@
 import React, { useState } from 'react';
 import share from '../../imgs/share.svg';
-import { useParams } from 'react-router-dom';
-import { useGetVacancyByIdQuery } from '../../api/apiSlice';
 import dots_horizontal from '../../imgs/dots-horizontal.svg';
-import { Job } from './job_user'
+import {Button} from "antd";
+
+export type Job = {
+    id?: number;
+    name?: string;
+    city?: string;
+    salary_from?: number;
+    salary_to?: number;
+    skills?: string[];
+    experience?: number;
+    address?: string;
+    description?: string;
+    employment_type?: number;
+    lastUpdated?: string;
+    status?: string;
+};
 
 interface JobCardProps {
     job: Job;
@@ -17,13 +30,8 @@ const employmentTypes: { [key: number]: string } = {
     4: "Стажировка"
 };
 
-const JobCard: React.FC<JobCardProps> = ({alwaysOpen = false }) => {
+const JobCard: React.FC<JobCardProps> = ({ job, alwaysOpen = false }) => {
     const [isOpen, setIsOpen] = useState(alwaysOpen);
-    const { id } = useParams<{ id: string }>();
-    const { data: job, error, isLoading } = useGetVacancyByIdQuery(id);
-
-    if (isLoading) return <div>Loading...</div>;
-    if (error) return <div>Error loading job</div>;
 
     return (
         <div className="bg-white px-[30px] py-[20px] rounded-[10px]">
@@ -36,18 +44,16 @@ const JobCard: React.FC<JobCardProps> = ({alwaysOpen = false }) => {
             </div>
             <h2 className="text-[22px] font-bold">{job.name}</h2>
             <div className="text-[20px] mb-[30px]">{job.salary_from}-{job.salary_to}</div>
-            <div className="text-[#777777]">{job.city}, {employmentTypes[job?.employment_type]} </div>
+            <div className="text-[#777777]">{job.city}, {employmentTypes[job.employment_type ?? 0]}</div>
             {isOpen && (
                 <div className="my-[20px]">
                     <div className="flex items-center jusify-start h-full w-full gap-[12px]">
-                        <div className="w-[64px] h-[64px] bg-[#2A5AB8] rounded-full">
-
-                        </div>
+                        <div className="w-[64px] h-[64px] bg-[#2A5AB8] rounded-full"></div>
                         <div className="h-full">
-                            <h4 className="font-bold">{'job.companyName'}</h4>
+                            <h4 className="font-bold">{job.address}</h4>
                             <div className="flex items-center">
-                                <span className="text-red-500">Отзывы {'job.reviews'}</span>
-                                <span className="text-yellow-500 ml-2">⭐ {'job.rating'}</span>
+                                <span className="text-red-500">Отзывы {job.experience}</span>
+                                <span className="text-yellow-500 ml-2">⭐ {job.experience}</span>
                             </div>
                         </div>
                     </div>
@@ -55,7 +61,7 @@ const JobCard: React.FC<JobCardProps> = ({alwaysOpen = false }) => {
                 </div>
             )}
             <div className="flex flex-wrap gap-[10px] my-[30px]">
-                {job.skills.map((skill: string, i:number) => (
+                {job.skills && job.skills.map((skill: string, i: number) => (
                     <span key={i} className="bg-[#F7F7F7] px-[12px] py-[10px] rounded-[5px]">
                         {skill}
                     </span>
@@ -63,21 +69,21 @@ const JobCard: React.FC<JobCardProps> = ({alwaysOpen = false }) => {
             </div>
             <div className="w-full flex justify-between items-center">
                 {alwaysOpen ?
-                <div className="flex justify-between w-full gap-[15px]">
-                    <div className="flex gap-[15px]">
-                        <button className="h-[44px] py-[10px] px-[12px] text-white bg-[#2A5AB8] rounded-[7px]">Отредактировать</button>
-                        <button className="py-[10px] px-[12px]  h-[44px] bg-[#DBDBDB] rounded-[7px]">Архивировать</button>
-                        <button className="py-[10px] px-[12px]  h-[44px] bg-[#DBDBDB] rounded-[7px]">Сохранить</button>
+                    <div className="flex justify-between w-full gap-[15px]">
+                        <div className="flex gap-[15px]">
+                            <button className="h-[44px] py-[10px] px-[12px] text-white bg-[#2A5AB8] rounded-[7px]">Отредактировать</button>
+                            <button className="py-[10px] px-[12px]  h-[44px] bg-[#DBDBDB] rounded-[7px]">Архивировать</button>
+                            <button className="py-[10px] px-[12px]  h-[44px] bg-[#DBDBDB] rounded-[7px]">Сохранить</button>
+                        </div>
+                        <div>
+                            <button className="w-[95px] h-[44px] bg-[#B82A2A] rounded-[7px] text-white">Удалить</button>
+                        </div>
                     </div>
-                    <div>
-                        <button className="w-[95px] h-[44px] bg-[#B82A2A] rounded-[7px] text-white">Удалить</button>
-                    </div>
-                </div>
                     :
-                <div className="flex gap-[15px]">
-                    <button className="w-[118px] h-[44px] text-white bg-[#2A5AB8] rounded-[7px]">Откликнуться</button>
-                    <button className="w-[95px] h-[44px] bg-[#DBDBDB] rounded-[7px]">Сохранить</button>
-                </div>
+                    <div className="flex gap-[15px]">
+                        <Button className="w-[118px] h-[44px] text-[16px] text-white bg-[#2A5AB8] rounded-[7px]">Откликнуться</Button>
+                        <button className="w-[95px] h-[44px] bg-[#DBDBDB] rounded-[7px]">Сохранить</button>
+                    </div>
                 }
                 {alwaysOpen ? (<div></div>) :
                     <button
@@ -93,3 +99,4 @@ const JobCard: React.FC<JobCardProps> = ({alwaysOpen = false }) => {
 };
 
 export default JobCard;
+

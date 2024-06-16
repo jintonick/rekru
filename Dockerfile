@@ -2,7 +2,7 @@
 FROM node:14-alpine
 
 # Устанавливаем рабочую директорию внутри контейнера
-WORKDIR /rekru
+WORKDIR /app
 
 # Копируем package.json и package-lock.json для установки зависимостей
 COPY package.json ./
@@ -18,7 +18,7 @@ COPY . .
 RUN npm run build
 
 # Открываем порт, на котором будет работать Nginx
-EXPOSE 3500
+EXPOSE 3000
 
 # Запускаем Nginx
 CMD [ "npm", "start" ]

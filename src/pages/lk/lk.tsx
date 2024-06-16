@@ -53,9 +53,8 @@ function Lk() {
                     </Button>
                 </div>
                 <div>
-                    <Button className="flex px-[14px] h-[44px] py-[12px] justify-start items-center gap-[8px] w-full border-none shadow-none" onClick={handleLogout}>
-                        <img src={log_out} />
-                        <h1 className="text-[#B82A2A]">Выйти</h1>
+                    <Button type="link" className="flex px-[14px] h-[44px] text-[#B82A2A] py-[12px] justify-start items-center gap-[8px] w-full border-none shadow-none" onClick={handleLogout}>
+                        <img src={log_out} />Выйти
                     </Button>
                 </div>
             </div>

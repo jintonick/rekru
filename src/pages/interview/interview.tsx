@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import JobCard from '../job/job-card';
-import { activeJobs } from "../job/data";
+import { useGetVacancyByIdQuery } from '../../api/apiSlice';
 import { resumes } from '../specialists/data2';
-import share from '../../imgs/share.svg';
-import dots_horizontal from '../../imgs/dots-horizontal.svg';
 import lightning_bolt from '../../imgs/lightning-bolt.svg';
 import { stages as initialStages } from './data3';
 import { Button, Input } from 'antd';
@@ -23,6 +22,9 @@ export interface Candidate {
 }
 
 const Interview: React.FC = () => {
+    const { id } = useParams<{ id: string }>();
+    const { data: job, error, isLoading } = useGetVacancyByIdQuery(id);
+
     const [expandedResume, setExpandedResume] = useState<number | null>(null);
     const [expandedStage, setExpandedStage] = useState<number | null>(null);
     const [stages, setStages] = useState<Stage[]>([{ id: 0, name: 'Отобранные кандидаты', candidates: resumes.map(resume => ({ id: resume.age, name: resume.name, status: 'pending' })) }, ...initialStages]);
@@ -88,11 +90,13 @@ const Interview: React.FC = () => {
         setStages(updatedStages);
     };
 
-    // @ts-ignore
+    if (isLoading) return <div>Loading...</div>;
+    if (error) return <div>Error loading job</div>;
+
     return (
         <div className="w-full min-h-screen flex justify-center px-[70px] gap-[28px] my-[20px]">
             <div className="w-full max-w-[773px] min-h-screen rounded-[12px] bg-white ">
-                <JobCard job={activeJobs[0]} alwaysOpen />
+                {job && <JobCard job={job} alwaysOpen />}
                 <div className="px-[30px] bg-white rounded-[12px]">
                     <div className="flex w-full justify-between items-center">
                         <h2 className="font-bold text-[24px] my-[30px]">Отклики на вакансию</h2>
@@ -136,5 +140,6 @@ const Interview: React.FC = () => {
 }
 
 export default Interview;
+
 
 
