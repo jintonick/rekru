@@ -9,7 +9,7 @@ COPY package.json ./
 COPY package-lock.json ./
 
 # Устанавливаем зависимости
-RUN npm install
+RUN npm install --legacy-peer-deps
 
 # Копируем остальные файлы проекта в контейнер
 COPY . .
