@@ -9,7 +9,7 @@ const Job: React.FC = () => {
 
     return (
         <div className="h-full">
-            {userType === 'recruiter' ? <JobAdmin /> : <JobUser />}
+            {userType === 'RECRUITER' ? <JobAdmin /> : <JobUser />}
         </div>
     );
 }

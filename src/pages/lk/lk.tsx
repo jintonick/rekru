@@ -102,7 +102,7 @@ function Lk() {
                                 <p className="mb-[20px] text-[18px]">{company}</p>
                             </div>
                         </div>
-                        {userType === 'recruiter' ? (
+                        {userType === 'RECRUITER' ? (
                             <div className="flex flex-col w-full mt-[20px]">
                                 <h3 className="text-[18px] font-bold mb-[10px]">Расписание</h3>
                                 <div className="h-full w-full flex justify-start gap-[30px] bg-[#F1F3F4] rounded-[7px] p-[20px]">

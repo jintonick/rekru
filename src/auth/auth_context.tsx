@@ -1,9 +1,15 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-import { AuthData, login, logout as logoutFn, isLoggedIn, getUserType, UserType } from './auth';
+
+export type UserType = 'APPLICANT' | 'RECRUITER';
+
+export interface AuthData {
+    token: string;
+    userType: UserType;
+}
 
 interface AuthContextType {
     authData: AuthData | null;
-    login: (userType: UserType) => void;
+    login: (token: string, userType: UserType) => void;
     logout: () => void;
     isLoggedIn: boolean;
     userType: UserType | null;
@@ -16,25 +22,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [userType, setUserType] = useState<UserType | null>(null);
 
     useEffect(() => {
-        if (isLoggedIn()) {
-            const storedUserType = getUserType();
-            if (storedUserType) {
-                setAuthData({ token: localStorage.getItem('authToken')!, userType: storedUserType });
-                setUserType(storedUserType);
-            }
+        const token = localStorage.getItem('authToken');
+        const userType = localStorage.getItem('userType') as UserType | null;
+        if (token && userType) {
+            setAuthData({ token, userType });
+            setUserType(userType);
         }
     }, []);
 
-    const loginHandler = (userType: UserType) => {
-        const data = login(userType);
-        localStorage.setItem('authToken', data.token);
-        localStorage.setItem('userType', data.userType);
-        setAuthData(data);
-        setUserType(data.userType);
+    const loginHandler = (token: string, userType: UserType) => {
+        localStorage.setItem('authToken', token);
+        localStorage.setItem('userType', userType);
+        setAuthData({ token, userType });
+        setUserType(userType);
     };
 
     const logoutHandler = () => {
-        logoutFn();
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('userType');
         setAuthData(null);
         setUserType(null);
     };
@@ -53,3 +58,6 @@ export const useAuth = () => {
     }
     return context;
 };
+
+
+

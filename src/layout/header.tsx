@@ -25,15 +25,15 @@ const Header: React.FC = () => {
                             <input placeholder="Введите запрос..." className="h-[23px] w-full"/>
                         </div>
                         <div className="px-[42px] flex justify-between w-full max-w-[585px]">
-                            <Link to={'/news'} className="h-[42px] flex flex-col justify-between items-center">
+                            <Link to={'/news'} className="h-[42px] flex flex-col justify-between items-center transition-transform transform hover:scale-105 active:scale-99">
                                 <img className="mt-[2px]" src={home} alt='home'/>
                                 <p className="mt-[7px]">Новости</p>
                             </Link>
-                            <Link to={'/job'} className="h-[42px] flex flex-col justify-between items-center">
+                            <Link to={'/job'} className="h-[42px] flex flex-col justify-between items-center transition-transform transform hover:scale-105 active:scale-95">
                                 <img className="mt-[2px]" src={briefcase} alt='briefcase'/>
                                 <p className="mt-[5px]">Вакансии</p>
                             </Link>
-                            <Link to={'/spec'} className="h-[42px] flex flex-col justify-between items-center">
+                            <Link to={'/spec'} className="h-[42px] flex flex-col justify-between items-center transition-transform transform hover:scale-105 active:scale-95">
                                 <img className="mt-[2px]" src={user} alt='user'/>
                                 <p className="mt-[5px]">Специалисты</p>
                             </Link>

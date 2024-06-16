@@ -1,4 +1,4 @@
-export type UserType = 'user' | 'recruiter';
+export type UserType = 'APPLICANT' | 'RECRUITER';
 
 export interface AuthData {
     token: string;
@@ -8,16 +8,16 @@ export interface AuthData {
 const mockTokens: { [key: string]: AuthData } = {
     user: {
         token: 'user-token-123',
-        userType: 'user',
+        userType: 'APPLICANT',
     },
     recruiter: {
         token: 'recruiter-token-456',
-        userType: 'recruiter',
+        userType: 'RECRUITER',
     },
 };
 
-export const login = (userType: UserType): AuthData => {
-    return mockTokens[userType];
+export const login = (token: string, userType: UserType): AuthData => {
+    return { token, userType };
 };
 
 export const isLoggedIn = (): boolean => {
@@ -32,3 +32,4 @@ export const logout = (): void => {
     localStorage.removeItem('authToken');
     localStorage.removeItem('userType');
 };
+

@@ -3,22 +3,40 @@ import { useNavigate } from 'react-router-dom';
 import apple from '../../imgs/apple.svg';
 import google from '../../imgs/google.svg';
 import { useAuth } from '../../auth/auth_context';
-import {Button} from "antd";
+import { Button } from 'antd';
+import { useLoginUserMutation } from '../../api/apiSlice';
+import {jwtDecode} from 'jwt-decode'; // Импортирование библиотеки для декодирования JWT
+import Cookies from 'js-cookie';
+import { UserType } from "../../auth/auth";
 
 const LoginForm: React.FC = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const { login } = useAuth();
     const navigate = useNavigate();
-    const handleSubmit = (e: React.FormEvent) => {
+    const [loginUser, { isLoading }] = useLoginUserMutation();
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (email === 'admin' && password === 'admin') {
-            login('recruiter');
-            navigate('/news');
-        } else if (email === 'user' && password === 'user') {
-            login('user');
-            navigate('/news');
-        } else {
+        try {
+            const response = await loginUser({ email, password }).unwrap();
+            // Сохранение токена в куки
+            if (response.token) {
+                Cookies.set('auth', response.token);
+                console.log('Токен сохранен в куки:', response.token);
+
+                // Извлечение и декодирование токена
+                const token = response.token;
+                const userData = jwtDecode<{ email: string, exp: number, role: UserType, userID: number }>(token);
+                console.log('Данные пользователя из токена:', userData);
+
+                login(token, userData.role);
+                navigate('/news');
+            } else {
+                alert('Неправильный логин или пароль');
+            }
+        } catch (err) {
+            console.error('Ошибка при авторизации:', err);
             alert('Неправильный логин или пароль');
         }
     };
@@ -56,7 +74,14 @@ const LoginForm: React.FC = () => {
                                 <button type="button" className="text-[#001D6C] font-medium">Забыл пароль?</button>
                             </div>
                         </div>
-                        <Button onClick={handleSubmit} id="submit" className="bg-[#2A5AB8] text-white text-[16px] font-medium h-[48px] w-full py-2 rounded-[7px] mb-[20px]">Войти</Button>
+                        <Button
+                            onClick={handleSubmit}
+                            id="submit"
+                            className="bg-[#2A5AB8] text-white text-[16px] font-medium h-[48px] w-full py-2 rounded-[7px] mb-[20px]"
+                            loading={isLoading}
+                        >
+                            Войти
+                        </Button>
                         <div className="flex gap-[16px]">
                             <button className="w-full flex items-center justify-center gap-[16px] py-2 border-[1px] text-[16px] font-medium border-[#2A5AB8] text-[#2A5AB8] rounded-[7px]">
                                 <img src={google} alt="Google" />
@@ -76,4 +101,13 @@ const LoginForm: React.FC = () => {
 }
 
 export default LoginForm;
+
+
+
+
+
+
+
+
+
 

@@ -1,0 +1,234 @@
+{
+	"info": {
+		"_postman_id": "60fef3c7-cb6e-4b42-8a15-c702e0578640",
+		"name": "networkator",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18999628"
+	},
+	"item": [
+		{
+			"name": "register user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"test@test.com\",\n    \"password\": \"someppswd\",\n    \"is_recruiter\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://sigmamalegroup-networkator-09b5.twc1.net/api/user/register",
+					"protocol": "https",
+					"host": [
+						"sigmamalegroup-networkator-09b5",
+						"twc1",
+						"net"
+					],
+					"path": [
+						"api",
+						"user",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"test@test.com\",\n    \"password\": \"someppswd\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://sigmamalegroup-networkator-09b5.twc1.net/api/user/login",
+					"protocol": "https",
+					"host": [
+						"sigmamalegroup-networkator-09b5",
+						"twc1",
+						"net"
+					],
+					"path": [
+						"api",
+						"user",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "new vacancy",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"some_name\",\n    \"experience\": 2,\n    \"city\": \"moscow\",\n    \"employment_type\": 3,\n    \"salary_from\": 100000,\n    \"salary_to\": 200000,\n    \"company_name\": \"zalupa inc.\",\n    \"skills\": [\"Go\", \"Python\"],\n    \"address\": \"ulitsa pushkina dom kolotushkina\",\n    \"description\": \"ne prihodite suda\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://sigmamalegroup-networkator-09b5.twc1.net/api/vacancy/new",
+					"protocol": "https",
+					"host": [
+						"sigmamalegroup-networkator-09b5",
+						"twc1",
+						"net"
+					],
+					"path": [
+						"api",
+						"vacancy",
+						"new"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "edit vacancy",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"some_name\",\n    \"experience\": 2,\n    \"city\": \"moscow\",\n    \"employment_type\": 3,\n    \"salary_from\": 100000,\n    \"salary_to\": 200000,\n    \"company_name\": \"zalupa inc.\",\n    \"skills\": [\"Go\", \"Python\"],\n    \"address\": \"ulitsa pushkina dom kolotushkina\",\n    \"description\": \"ne prihodite suda\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://sigmamalegroup-networkator-09b5.twc1.net/api/vacancy/edit/1",
+					"protocol": "https",
+					"host": [
+						"sigmamalegroup-networkator-09b5",
+						"twc1",
+						"net"
+					],
+					"path": [
+						"api",
+						"vacancy",
+						"edit",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "filter vacancies",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    // \"experience\": \"\",\n    \"city\": \"moscow\",// город должен заполнятся всегда, иначе сломаем запрос\n    // \"employment_type\": \"\",\n    // \"salary_from\": 10000\n    // \"salary_to\": 160000\n    // \"company_name\": \"\"\n    \"archived\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://sigmamalegroup-networkator-09b5.twc1.net/api/vacancy/filter",
+					"protocol": "https",
+					"host": [
+						"sigmamalegroup-networkator-09b5",
+						"twc1",
+						"net"
+					],
+					"path": [
+						"api",
+						"vacancy",
+						"filter"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "archive vacancy",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://sigmamalegroup-networkator-09b5.twc1.net/api/vacancy/archive/1",
+					"protocol": "https",
+					"host": [
+						"sigmamalegroup-networkator-09b5",
+						"twc1",
+						"net"
+					],
+					"path": [
+						"api",
+						"vacancy",
+						"archive",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "apply vacancy (for user)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://sigmamalegroup-networkator-09b5.twc1.net/api/vacancy/apply/1",
+					"protocol": "https",
+					"host": [
+						"sigmamalegroup-networkator-09b5",
+						"twc1",
+						"net"
+					],
+					"path": [
+						"api",
+						"vacancy",
+						"apply",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://sigmamalegroup-networkator-09b5.twc1.net/api/vacancy/1",
+					"protocol": "https",
+					"host": [
+						"sigmamalegroup-networkator-09b5",
+						"twc1",
+						"net"
+					],
+					"path": [
+						"api",
+						"vacancy",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

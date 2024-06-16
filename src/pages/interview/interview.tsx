@@ -25,7 +25,7 @@ export interface Candidate {
 const Interview: React.FC = () => {
     const [expandedResume, setExpandedResume] = useState<number | null>(null);
     const [expandedStage, setExpandedStage] = useState<number | null>(null);
-    const [stages, setStages] = useState<Stage[]>([{ id: 0, name: 'Все кандидаты', candidates: resumes.map(resume => ({ id: resume.age, name: resume.name, status: 'pending' })) }, ...initialStages]);
+    const [stages, setStages] = useState<Stage[]>([{ id: 0, name: 'Отобранные кандидаты', candidates: resumes.map(resume => ({ id: resume.age, name: resume.name, status: 'pending' })) }, ...initialStages]);
     const [editingStage, setEditingStage] = useState<number | null>(null);
     const [newStageName, setNewStageName] = useState<string>('');
     const [isEditing, setIsEditing] = useState<boolean>(false);

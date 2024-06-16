@@ -68,8 +68,7 @@ const JobForm: React.FC = () => {
                             />
                         </div>
                         <div className="mb-4">
-                            <label className="block">Область деятельности</label>
-                            <label className="text-[14px] text-[#BBBBBB]">Можно выбрать несколько областей для лучшего поиска</label>
+                            <label className="block">Название компании</label>
                             <input
                                 type="text"
                                 name="field"
@@ -90,16 +89,23 @@ const JobForm: React.FC = () => {
                         </div>
                         <div className="mb-[13px]">
                             <label className="block text-gray-700">Уровень з/п за период времени или за объем работы</label>
-                            <div className="flex items-center max-w-[464px] py-[3px] h-[44px] border border-[#DBDBDB] rounded-[7px] focus:outline-none focus:ring-[#2A5AB8] focus:border-[#2A5AB8]">
+                            <div className="flex items-center max-w-[464px] py-[3px] space-x-[10px]">
                                 <input
                                     type="text"
-                                    name="salary"
-                                    value={formData.salary}
+                                    name="salaryFrom"
+                                    placeholder="От"
                                     onChange={handleChange}
-                                    className="h-full block w-full"
+                                    className="w-full h-[44px] border border-[#DBDBDB] rounded-[7px] focus:outline-none focus:ring-[#2A5AB8] focus:border-[#2A5AB8] px-[12px]"
+                                />
+                                <input
+                                    type="text"
+                                    name="salaryTo"
+                                    placeholder="До"
+                                    onChange={handleChange}
+                                    className="w-full h-[44px] border border-[#DBDBDB] rounded-[7px] focus:outline-none focus:ring-[#2A5AB8] focus:border-[#2A5AB8] px-[12px]"
                                 />
                                 <select
-                                    className="w-[85px] block bg-[#DBDBDB] h-[44px] px-[12px] py-[10px] rounded-[7px]"
+                                    className="w-[85px] bg-[#DBDBDB] h-[44px] px-[12px] py-[10px] rounded-[7px] focus:outline-none focus:ring-[#2A5AB8] focus:border-[#2A5AB8]"
                                     name="currency"
                                     onChange={handleChange}
                                 >
@@ -107,32 +113,6 @@ const JobForm: React.FC = () => {
                                     <option>USD</option>
                                     <option>EUR</option>
                                 </select>
-                            </div>
-                        </div>
-                        <div className="mb-4">
-                            <div className="mt-1 flex flex-col">
-                                <label className="inline-flex items-center">
-                                    <input
-                                        type="radio"
-                                        name="tax"
-                                        value="До вычета налогов"
-                                        checked={formData.tax === "До вычета налогов"}
-                                        onChange={handleChange}
-                                        className="form-radio"
-                                    />
-                                    <span className="ml-2">До вычета налогов</span>
-                                </label>
-                                <label className="inline-flex items-center">
-                                    <input
-                                        type="radio"
-                                        name="tax"
-                                        value="После вычета налогов"
-                                        checked={formData.tax === "После вычета налогов"}
-                                        onChange={handleChange}
-                                        className="form-radio"
-                                    />
-                                    <span className="ml-2">После вычета налогов</span>
-                                </label>
                             </div>
                         </div>
                         <div className="mb-4">

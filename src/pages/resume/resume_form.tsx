@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import {Button} from "antd";
 
 interface WorkExperience {
     companyName: string;
@@ -307,22 +308,21 @@ const ResumeForm: React.FC = () => {
                                         className="mt-[13px] h-[88px] block w-full max-w-[464px] px-3 py-2 border border-[#DBDBDB] rounded-[7px] focus:outline-none focus:ring-[#2A5AB8] focus:border-[#2A5AB8]"
                                     />
                                 </div>
-                                <button
-                                    type="button"
-                                    className="text-red-600"
+                                <Button
+                                    type="link"
+                                    className="text-red-600 text-[16px]"
                                     onClick={() => removeWorkExperience(index)}
                                 >
                                     Удалить
-                                </button>
+                                </Button>
                             </div>
                         ))}
-                        <button
-                            type="button"
-                            className="px-4 py-2 bg-[#F7F7F7] rounded-[7px] w-full"
+                        <Button
+                            className="px-4 py-2 bg-[#F7F7F7] h-[44px] border-none shadow-none text-[16px] rounded-[7px] w-full"
                             onClick={addWorkExperience}
                         >
                             Добавить опыт работы
-                        </button>
+                        </Button>
                     </form>
 
                     <div>

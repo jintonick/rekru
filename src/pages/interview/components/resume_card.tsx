@@ -2,6 +2,7 @@ import React from 'react';
 import { Resume } from '../../specialists/data2';
 import share from '../../../imgs/share.svg';
 import dots_horizontal from '../../../imgs/dots-horizontal.svg';
+import {Button} from "antd";
 
 interface ResumeCardProps {
     resume: Resume;
@@ -51,14 +52,15 @@ const ResumeCard: React.FC<ResumeCardProps> = ({ resume, index, expandedResume, 
                 </div>
                 <div className="flex justify-between items-center mb-[20px]">
                     <div className="flex gap-[15px]">
-                        <button className="px-[12px] py-[10px] h-[44px] text-white bg-[#2A5AB8] rounded-[7px]">Пригласить на интервью</button>
+                        <button className="px-[12px] py-[10px] h-[44px] text-white bg-[#2A5AB8] rounded-[7px]">Пригласить на первый этап</button>
                     </div>
-                    <button
+                    <Button
+                        type="link"
                         onClick={() => toggleExpand(index)}
-                        className="mt-4 text-[#2A5AB8]"
+                        className="mt-4 text-[#2A5AB8] text-[16px]"
                     >
                         {expandedResume === index ? 'Свернуть' : 'Развернуть'}
-                    </button>
+                    </Button>
                 </div>
             </div>
         </div>
