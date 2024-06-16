@@ -1,11 +1,12 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-const baseUrl = 'https://sigmamalegroup-networkator-09b5.twc1.net/api/';
+
 
 export const apiSlice = createApi({
     reducerPath: 'api',
     baseQuery: fetchBaseQuery({
-        baseUrl,
+        baseUrl: 'https://sigmamalegroup-networkator-09b5.twc1.net/api',
+        credentials: 'include',
         prepareHeaders: (headers) => {
             headers.set('Content-Type', 'application/json');
             return headers;
@@ -31,6 +32,7 @@ export const apiSlice = createApi({
                 url: 'vacancy/new',
                 method: 'POST',
                 body: JSON.stringify(vacancy),
+                credentials: 'include'
             }),
         }),
         editVacancy: builder.mutation({
@@ -60,9 +62,7 @@ export const apiSlice = createApi({
             }),
         }),
         getVacancyById: builder.query({
-            query: (id) => ({
-                url: `vacancy/${id}`,
-            }),
+            query: (id) => `vacancy/${id}`,
         }),
     }),
 });

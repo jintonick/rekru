@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import {Pagination, Badge, Calendar, Modal, Button} from "antd";
+import React, { useState, useEffect } from "react";
+import { Pagination, Badge, Calendar, Modal, Button } from "antd";
 import type { BadgeProps, CalendarProps } from 'antd';
-import { Job, activeJobs, draftJobs, archivedJobs } from "./data";
-import calendar_white from '../../imgs/calendar_white.svg'
-import {Link} from "react-router-dom";
+import { useFilterVacanciesMutation } from '../../api/apiSlice';
+import calendar_white from '../../imgs/calendar_white.svg';
+import { Link } from "react-router-dom";
 import type { Dayjs } from 'dayjs';
-import plus_white from '../../imgs/plus_white.svg'
-import arrow_down_gray from '../../imgs/arrow_down_gray.svg'
-import './job_style.css'
+import plus_white from '../../imgs/plus_white.svg';
+import arrow_down_gray from '../../imgs/arrow_down_gray.svg';
+import './job_style.css';
 
 type JobCategory = "active" | "draft" | "archive";
 
@@ -48,6 +48,19 @@ const getMonthData = (value: Dayjs) => {
     }
 };
 
+type Vacancy = {
+    id: number;
+    name: string;
+    city: string;
+    salary_from: number;
+    salary_to: number;
+    skills: string[];
+    experience: number;
+    address: string;
+    description: string;
+    employment_type: number;
+};
+
 function JobAdmin() {
     const [sortField, setSortField] = useState('');
     const [selectedCategory, setSelectedCategory] = useState<JobCategory>("active");
@@ -55,6 +68,21 @@ function JobAdmin() {
     const [currentPage, setCurrentPage] = useState(1);
     const [sortKey, setSortKey] = useState("");
     const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+    const [jobs, setJobs] = useState<Vacancy[]>([]);
+    const [filterVacancies, { isLoading, data }] = useFilterVacanciesMutation();
+
+    useEffect(() => {
+        const fetchJobs = async () => {
+            try {
+                const response = await filterVacancies({ "salary_from": 100000, archived: false }).unwrap();
+                setJobs(response.vacancies);
+            } catch (error) {
+                console.error('Ошибка при получении вакансий:', error);
+            }
+        };
+
+        fetchJobs();
+    }, [filterVacancies]);
 
     const monthCellRender = (value: Dayjs) => {
         const num = getMonthData(value);
@@ -97,20 +125,12 @@ function JobAdmin() {
         setIsModalOpen(false);
     };
 
-    const jobsMap: { [key in JobCategory]: Job[] } = {
-        active: activeJobs,
-        draft: draftJobs,
-        archive: archivedJobs,
-    };
-
-    const jobs = jobsMap[selectedCategory];
-
     const sortedJobs = [...jobs].sort((a, b) => {
         if (!sortKey) return 0;
         if (sortOrder === "asc") {
-            return a[sortKey as keyof Job] > b[sortKey as keyof Job] ? 1 : -1;
+            return a[sortKey as keyof Vacancy] > b[sortKey as keyof Vacancy] ? 1 : -1;
         } else {
-            return a[sortKey as keyof Job] < b[sortKey as keyof Job] ? 1 : -1;
+            return a[sortKey as keyof Vacancy] < b[sortKey as keyof Vacancy] ? 1 : -1;
         }
     });
 
@@ -131,9 +151,9 @@ function JobAdmin() {
     };
 
     const categories = [
-        { label: "Активные", key: "active" as JobCategory, count: activeJobs.length },
-        { label: "Черновик", key: "draft" as JobCategory, count: draftJobs.length },
-        { label: "Архив", key: "archive" as JobCategory, count: archivedJobs.length },
+        { label: "Активные", key: "active" as JobCategory, count: jobs.length },
+        { label: "Черновик", key: "draft" as JobCategory, count: 0 },
+        { label: "Архив", key: "archive" as JobCategory, count: 0 },
     ];
 
     return (
@@ -203,15 +223,19 @@ function JobAdmin() {
                     </div>
                     <div className="flex flex-col gap-[15px] h-[670px] pt-[20px]">
                         {paginatedJobs.map((job, index) => (
-                            <div key={index} className="bg-white flex justify-between items-center truncate h-[117px] px-[40px] py-[20px] rounded-[10px] border-b">
+                            <div key={job.id} className="bg-white flex justify-between items-center truncate h-[117px] px-[40px] py-[20px] rounded-[10px] border-b">
                                 <div className="flex flex-col text-[16px] text-[#777777]">
-                                    <h2 className="font-bold text-[22px] text-black truncate">{job.title}</h2>
-                                    <p className="truncate">{job.location}</p>
-                                    <p className="mt-[20px] truncate">{job.salary}</p>
+                                    <h2 className="font-bold text-[22px] text-black truncate">{job.name}</h2>
+                                    <p className="truncate">{job.city}</p>
+                                    <p className="mt-[20px] truncate">{`${job.salary_from} - ${job.salary_to}`}</p>
                                 </div>
-                                <div>{job.lastUpdated}</div>
-                                <div>{job.status}</div>
-                                <Button type="link"><Link className="text-[#2A5AB8] text-[16px] truncate" to={"/interview"}>Перейти к подбору кандидатов</Link></Button>
+                                <div>{'job.lastUpdated'}</div>
+                                <div>{'job.status'}</div>
+                                <Button type="link">
+                                    <Link className="text-[#2A5AB8] text-[16px] truncate" to={`/interview/${job.id}`}>
+                                        Перейти к подбору кандидатов
+                                    </Link>
+                                </Button>
                             </div>
                         ))}
                     </div>
@@ -235,4 +259,5 @@ function JobAdmin() {
 }
 
 export default JobAdmin;
+
 

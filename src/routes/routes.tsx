@@ -16,7 +16,7 @@ function AppRoutes(){
             <Route path="/job" element={<Job />} />
             <Route path='/job/new_job/' element={<JobForm />}/>
             <Route path='/spec' element={<ResumeListing />}/>
-            <Route path='/interview' element={<Interview />} />
+            <Route path='/interview/:id' element={<Interview />} />
             <Route path='/lk' element={<Lk />} />
         </Routes>
     )

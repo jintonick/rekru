@@ -1,37 +1,43 @@
-import React, { useState } from 'react';
-import { Select, Input, Pagination, Slider, Button } from 'antd';
-import { activeJobs } from './data';
+import React, { useState, useEffect } from 'react';
+import { Select, Input, Pagination, Button } from 'antd';
 import search_white from '../../imgs/search_white.svg';
 import JobCard from './job-card';
+import { useFilterVacanciesMutation } from '../../api/apiSlice';
 
 const { Option } = Select;
+
+export type Job = {
+    id?: number;
+    name?: string;
+    city?: string;
+    salary_from?: number;
+    salary_to?: number;
+    skills?: string[];
+    experience?: number;
+    address?: string;
+    description?: string;
+    employment_type?: number;
+};
 
 const JobUser: React.FC = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [isSalaryVisible, setIsSalaryVisible] = useState(false);
-
-    const handleExperienceChange = (value: string) => {
-        console.log(value);
-    };
-
-    const handleRegionSearch = (value: string) => {
-        console.log(value);
-    };
-
-    const handleEmploymentTypeChange = (value: string) => {
-        console.log(value);
-    };
-
-    const handleSalaryChange = (value: [number, number] | number[]) => {
-        console.log(value);
-    };
-
-    const handleCompanySearch = (value: string) => {
-        console.log(value);
-    };
+    const [filterVacancies, { data: jobsData, isLoading, error }] = useFilterVacanciesMutation();
 
     const jobsPerPage = 5;
-    const paginatedJobs = activeJobs.slice((currentPage - 1) * jobsPerPage, currentPage * jobsPerPage);
+
+    useEffect(() => {
+        const fetchJobs = async () => {
+            try {
+                await filterVacancies({ "salary_from": 100000, archived: false }).unwrap();
+            } catch (err) {
+                console.error('Error fetching jobs:', err);
+            }
+        };
+        fetchJobs();
+    }, [filterVacancies]);
+
+    const paginatedJobs: Job[] = jobsData?.vacancies.slice((currentPage - 1) * jobsPerPage, currentPage * jobsPerPage) || [];
 
     return (
         <div className="w-full min-h-screen flex justify-center mb-[30px]">
@@ -50,7 +56,7 @@ const JobUser: React.FC = () => {
                 </header>
 
                 <div className="flex justify-between gap-[26px] mt-[20px] mb-[32px]">
-                    <Select defaultValue="Опыт работы" className="w-full h-[44px] rounded-[7px]" onChange={handleExperienceChange}>
+                    <Select defaultValue="Опыт работы" className="w-full h-[44px] rounded-[7px]">
                         <Option value="Неважно">Неважно</Option>
                         <Option value="От 1 года до 3 лет">От 1 года до 3 лет</Option>
                         <Option value="От 3 лет до 5 лет">От 3 лет до 5 лет</Option>
@@ -61,8 +67,6 @@ const JobUser: React.FC = () => {
                         showSearch
                         placeholder="Город"
                         className="w-full h-[44px]"
-                        onSearch={handleRegionSearch}
-                        onChange={handleRegionSearch}
                     >
                         <Option value="Москва">Москва</Option>
                         <Option value="Санкт-Петербург">Санкт-Петербург</Option>
@@ -71,7 +75,7 @@ const JobUser: React.FC = () => {
                         <Option value="Казань">Казань</Option>
                     </Select>
 
-                    <Select defaultValue="Тип занятости" className="w-full h-[44px]" onChange={handleEmploymentTypeChange}>
+                    <Select defaultValue="Тип занятости" className="w-full h-[44px]">
                         <Option value="Полная занятость">Полная занятость</Option>
                         <Option value="Частичная занятость">Частичная занятость</Option>
                         <Option value="Проектная работа">Проектная работа</Option>
@@ -109,8 +113,6 @@ const JobUser: React.FC = () => {
                         showSearch
                         placeholder="Компания"
                         className="w-full h-[44px]"
-                        onSearch={handleCompanySearch}
-                        onChange={handleCompanySearch}
                     >
                         <Option value="Компания 1">Компания 1</Option>
                         <Option value="Компания 2">Компания 2</Option>
@@ -121,7 +123,9 @@ const JobUser: React.FC = () => {
                 </div>
 
                 <div className="space-y-4">
-                    {paginatedJobs.map((job, index) => (
+                    {isLoading && <div>Loading...</div>}
+                    {error && <div>Error loading jobs</div>}
+                    {paginatedJobs.map((job: Job, index: number) => (
                         <JobCard key={index} job={job} />
                     ))}
                 </div>
@@ -130,7 +134,7 @@ const JobUser: React.FC = () => {
                     <Pagination
                         current={currentPage}
                         pageSize={jobsPerPage}
-                        total={activeJobs.length}
+                        total={jobsData?.vacancies.length || 0}
                         onChange={page => setCurrentPage(page)}
                     />
                 </div>
@@ -140,5 +144,7 @@ const JobUser: React.FC = () => {
 };
 
 export default JobUser;
+
+
 
 

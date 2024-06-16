@@ -47,7 +47,10 @@ const Header: React.FC = () => {
                             </button>
                         </div>
                         <Link to="/lk" className="h-full flex justify-center items-center">
-                            <Avatar className='h-[46px] w-[46px]' icon={<UserOutlined />} />
+                            <Avatar
+                                className="h-[46px] w-[46px] transition-transform transform hover:scale-110 active:scale-95 hover:shadow-lg active:shadow-md"
+                                icon={<UserOutlined />}
+                            />
                         </Link>
                     </div>
                 </header>
