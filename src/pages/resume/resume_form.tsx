@@ -1,70 +1,101 @@
 import React, { useState, useEffect } from 'react';
-import {Button} from "antd";
+import { Button, Radio, DatePicker, Select } from "antd";
+import { useCreateResumeMutation } from '../../api/apiSlice';
+import moment from 'moment';
+
+const { RangePicker } = DatePicker;
+
+const educationLevels = [
+    { label: "Среднее", value: 1 },
+    { label: "Среднее специальное", value: 2 },
+    { label: "Неоконченное высшее", value: 3 },
+    { label: "Высшее", value: 4 },
+    { label: "Бакалавр", value: 5 },
+    { label: "Магистр", value: 6 },
+    { label: "Кандидат наук", value: 7 },
+    { label: "Доктор наук", value: 8 }
+];
+
+const skillsOptions = [
+    "Python", "SQL", "PostgreSQL", "Английский язык", "Redis", "Django",
+    "FastAPI", "RabbitMQ", "aiohttp", "Kafka", "Docker", "grafana",
+    "prometheus", "pytest", "Git", "Linux", "Web Scrapping", "SQLAlchemy",
+    "REST API", "machine learning"
+].map(skill => ({ label: skill, value: skill }));
 
 interface WorkExperience {
     companyName: string;
-    workPeriod: string;
-    workDetails: string;
+    timeFrom: string;
+    timeTo: string;
+    description: string;
 }
 
 const ResumeForm: React.FC = () => {
     const [isHeaderFixed, setIsHeaderFixed] = useState(false);
     const [formData, setFormData] = useState({
-        name: '',
-        gender: '',
-        location: '',
-        birthDate: '',
-        phoneNumber: '',
-        salary: '',
-        experience: '',
-        tax: '',
+        fio: '',
+        gender: 1, // 1 for male, 2 for female
+        address: '',
+        birth_date: '1966-01-03T00:06:56.52Z',
+        phone: '',
+        salary_from: 0,
+        salary_to: 0,
         education: '',
-        skills: '',
+        position: '',
+        skills: [] as string[],
         nationality: '',
-        disability: '',
-        companyName: '',
-        workPeriod: '',
-        workDetails: '',
-        job_name: '',
+        disabilities: false,
+        workExperience: [{ companyName: '', timeFrom: '1966-03-03T00:06:56.52Z', timeTo: '1966-04-03T00:06:56.52Z', description: '' }]
     });
-    const [skills, setSkills] = useState<string[]>([]);
-    const [skillInput, setSkillInput] = useState('');
-    const [workExperience, setWorkExperience] = useState<WorkExperience[]>([{ companyName: '', workPeriod: '', workDetails: '' }]);
+    const [createResume] = useCreateResumeMutation();
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-        const { name, value } = e.target;
+    const handleChange = (name: string, value: any) => {
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleSkillInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setSkillInput(e.target.value);
+    const handleSkillChange = (value: string[]) => {
+        setFormData({ ...formData, skills: value });
     };
 
-    const handleSkillInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter' && skillInput.trim()) {
-            setSkills([...skills, skillInput.trim()]);
-            setSkillInput('');
-        }
-    };
-
-    const removeSkill = (index: number) => {
-        setSkills(skills.filter((_, i) => i !== index));
-    };
-
-    const handleWorkExperienceChange = (index: number, e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
-        const updatedWorkExperience = [...workExperience];
-        updatedWorkExperience[index][name as keyof WorkExperience] = value;
-        setWorkExperience(updatedWorkExperience);
+    const handleWorkExperienceChange = (index: number, field: string, value: any) => {
+        const updatedWorkExperience = [...formData.workExperience];
+        (updatedWorkExperience[index] as any)[field] = value;
+        setFormData({ ...formData, workExperience: updatedWorkExperience });
     };
 
     const addWorkExperience = () => {
-        setWorkExperience([...workExperience, { companyName: '', workPeriod: '', workDetails: '' }]);
+        setFormData({ ...formData, workExperience: [...formData.workExperience, { companyName: '', timeFrom: '', timeTo: '', description: '' }] });
     };
 
     const removeWorkExperience = (index: number) => {
-        const updatedWorkExperience = workExperience.filter((_, i) => i !== index);
-        setWorkExperience(updatedWorkExperience);
+        const updatedWorkExperience = formData.workExperience.filter((_, i) => i !== index);
+        setFormData({ ...formData, workExperience: updatedWorkExperience });
+    };
+
+    const handleGenderChange = (e: any) => {
+        setFormData({ ...formData, gender: e.target.value });
+    };
+
+    const handleDisabilitiesChange = (e: any) => {
+        setFormData({ ...formData, disabilities: e.target.value === 'yes' });
+    };
+
+    const handleSubmit = async () => {
+        try {
+            // Convert date formats
+            const updatedWorkExperience = formData.workExperience.map(exp => ({
+                ...exp,
+                timeFrom: moment(exp.timeFrom).format("YYYY-MM-DDTHH:mm:ss.SSZ"),
+                timeTo: moment(exp.timeTo).format("YYYY-MM-DDTHH:mm:ss.SSZ")
+            }));
+            const updatedFormData = { ...formData, workExperience: updatedWorkExperience, birth_date: moment(formData.birth_date).format("YYYY-MM-DDTHH:mm:ss.SSZ") };
+
+            await createResume(updatedFormData);
+            // Handle success, e.g., show a message or redirect
+        } catch (error) {
+            console.error(error);
+            // Handle error, e.g., show an error message
+        }
     };
 
     useEffect(() => {
@@ -83,10 +114,7 @@ const ResumeForm: React.FC = () => {
         };
     }, []);
 
-    const name = formData.name;
-    const gender = formData.gender;
-    const location = formData.location;
-    const requiredFieldsComplete = name && gender && location;
+    const requiredFieldsComplete = formData.fio && formData.gender && formData.address && formData.birth_date;
 
     return (
         <div className="w-full flex justify-center min-h-screen">
@@ -98,7 +126,7 @@ const ResumeForm: React.FC = () => {
                     </div>
                     <div>
                         <button className="px-[12px] py-[10px] bg-[#DBDBDB] text-black rounded mr-[15px]">Сохранить изменения</button>
-                        <button className={`px-[12px] py-[10px] ${requiredFieldsComplete ? 'bg-[#2A5AB8] text-white' : 'bg-gray-400 text-gray-600 cursor-not-allowed'} rounded`} disabled={!requiredFieldsComplete}>Опубликовать</button>
+                        <button onClick={handleSubmit} className={`px-[12px] py-[10px] ${requiredFieldsComplete ? 'bg-[#2A5AB8] text-white' : 'bg-gray-400 text-gray-600 cursor-not-allowed'} rounded`} disabled={!requiredFieldsComplete}>Опубликовать</button>
                     </div>
                 </header>
                 <div className="mt-4 grid grid-cols-[2.5fr_1fr] bg-white rounded-[12px] mb-[80px]">
@@ -108,9 +136,9 @@ const ResumeForm: React.FC = () => {
                             <label className="block">Кем хотите работать?</label>
                             <input
                                 type="text"
-                                name="job_name"
-                                value={formData.job_name}
-                                onChange={handleChange}
+                                name="position"
+                                value={formData.position}
+                                onChange={(e) => handleChange('position', e.target.value)}
                                 className="mt-[13px] h-[44px] block w-full max-w-[464px] px-3 py-2 border border-[#DBDBDB] rounded-[7px] focus:outline-none focus:ring-[#2A5AB8] focus:border-[#2A5AB8]"
                             />
                         </div>
@@ -118,38 +146,26 @@ const ResumeForm: React.FC = () => {
                             <label className="block">Как вас зовут?</label>
                             <input
                                 type="text"
-                                name="name"
-                                value={formData.name}
-                                onChange={handleChange}
+                                name="fio"
+                                value={formData.fio}
+                                onChange={(e) => handleChange('fio', e.target.value)}
                                 className="mt-[13px] h-[44px] block w-full max-w-[464px] px-3 py-2 border border-[#DBDBDB] rounded-[7px] focus:outline-none focus:ring-[#2A5AB8] focus:border-[#2A5AB8]"
                             />
                         </div>
                         <div className="mb-4">
                             <label className="block text-gray-700">Ваш пол</label>
-                            <div className="mt-1 flex gap-2">
-                                <button
-                                    type="button"
-                                    className={`px-4 py-2 rounded ${formData.gender === 'Мужской' ? 'bg-[#2A5AB8] text-white' : 'bg-gray-200 text-black'}`}
-                                    onClick={() => setFormData({ ...formData, gender: 'Мужской' })}
-                                >
-                                    Мужской
-                                </button>
-                                <button
-                                    type="button"
-                                    className={`px-4 py-2 rounded ${formData.gender === 'Женский' ? 'bg-[#2A5AB8] text-white' : 'bg-gray-200 text-black'}`}
-                                    onClick={() => setFormData({ ...formData, gender: 'Женский' })}
-                                >
-                                    Женский
-                                </button>
-                            </div>
+                            <Radio.Group onChange={handleGenderChange} value={formData.gender}>
+                                <Radio value={1}>Мужской</Radio>
+                                <Radio value={2}>Женский</Radio>
+                            </Radio.Group>
                         </div>
                         <div className="mb-4">
                             <label className="block text-gray-700">Где вы живете?</label>
                             <input
                                 type="text"
-                                name="location"
-                                value={formData.location}
-                                onChange={handleChange}
+                                name="address"
+                                value={formData.address}
+                                onChange={(e) => handleChange('address', e.target.value)}
                                 className="mt-[13px] h-[44px] block w-full max-w-[464px] px-3 py-2 border border-[#DBDBDB] rounded-[7px] focus:outline-none focus:ring-[#2A5AB8] focus:border-[#2A5AB8]"
                             />
                         </div>
@@ -157,9 +173,9 @@ const ResumeForm: React.FC = () => {
                             <label className="block text-gray-700">Дата рождения</label>
                             <input
                                 type="date"
-                                name="birthDate"
-                                value={formData.birthDate}
-                                onChange={handleChange}
+                                name="birth_date"
+                                value={formData.birth_date}
+                                onChange={(e) => handleChange('birth_date', e.target.value)}
                                 className="mt-[13px] h-[44px] block w-full max-w-[464px] px-3 py-2 border border-[#DBDBDB] rounded-[7px] focus:outline-none focus:ring-[#2A5AB8] focus:border-[#2A5AB8]"
                             />
                         </div>
@@ -167,26 +183,33 @@ const ResumeForm: React.FC = () => {
                             <label className="block text-gray-700">Номер телефона</label>
                             <input
                                 type="text"
-                                name="phoneNumber"
-                                value={formData.phoneNumber}
-                                onChange={handleChange}
+                                name="phone"
+                                value={formData.phone}
+                                onChange={(e) => handleChange('phone', e.target.value)}
                                 className="mt-[13px] h-[44px] block w-full max-w-[464px] px-3 py-2 border border-[#DBDBDB] rounded-[7px] focus:outline-none focus:ring-[#2A5AB8] focus:border-[#2A5AB8]"
                             />
                         </div>
                         <div className="mb-[13px]">
                             <label className="block text-gray-700">Уровень з/п за период времени или за объем работы</label>
-                            <div className="flex items-center max-w-[464px] py-[3px] h-[44px] border border-[#DBDBDB] rounded-[7px] focus:outline-none focus:ring-[#2A5AB8] focus:border-[#2A5AB8]">
+                            <div className="flex items-center max-w-[464px] py-[3px] space-x-[10px]">
                                 <input
-                                    type="text"
-                                    name="salary"
-                                    value={formData.salary}
-                                    onChange={handleChange}
-                                    className="h-full block w-full"
+                                    type="number"
+                                    name="salary_from"
+                                    placeholder="От"
+                                    onChange={(e) => handleChange('salary_from', e.target.value)}
+                                    className="w-full h-[44px] border border-[#DBDBDB] rounded-[7px] focus:outline-none focus:ring-[#2A5AB8] focus:border-[#2A5AB8] px-[12px]"
+                                />
+                                <input
+                                    type="number"
+                                    name="salary_to"
+                                    placeholder="До"
+                                    onChange={(e) => handleChange('salary_to', e.target.value)}
+                                    className="w-full h-[44px] border border-[#DBDBDB] rounded-[7px] focus:outline-none focus:ring-[#2A5AB8] focus:border-[#2A5AB8] px-[12px]"
                                 />
                                 <select
-                                    className="w-[85px] block bg-[#DBDBDB] h-[44px] px-[12px] py-[10px] rounded-[7px]"
+                                    className="w-[85px] bg-[#DBDBDB] h-[44px] px-[12px] py-[10px] rounded-[7px] focus:outline-none focus:ring-[#2A5AB8] focus:border-[#2A5AB8]"
                                     name="currency"
-                                    onChange={handleChange}
+                                    onChange={(e) => handleChange('currency', e.target.value)}
                                 >
                                     <option>RUB</option>
                                     <option>USD</option>
@@ -195,63 +218,24 @@ const ResumeForm: React.FC = () => {
                             </div>
                         </div>
                         <div className="mb-4">
-                            <div className="mt-1 flex flex-col">
-                                <label className="inline-flex items-center">
-                                    <input
-                                        type="radio"
-                                        name="tax"
-                                        value="До вычета налогов"
-                                        checked={formData.tax === "До вычета налогов"}
-                                        onChange={handleChange}
-                                        className="form-radio"
-                                    />
-                                    <span className="ml-2">До вычета налогов</span>
-                                </label>
-                                <label className="inline-flex items-center">
-                                    <input
-                                        type="radio"
-                                        name="tax"
-                                        value="После вычета налогов"
-                                        checked={formData.tax === "После вычета налогов"}
-                                        onChange={handleChange}
-                                        className="form-radio"
-                                    />
-                                    <span className="ml-2">После вычета налогов</span>
-                                </label>
-                            </div>
-                        </div>
-                        <div className="mb-4">
                             <label className="block text-gray-700">Какое у вас образование?</label>
-                            <input
-                                type="text"
-                                name="education"
+                            <Select
+                                style={{ width: '100%', height: '44px' }}
+                                onChange={(value) => handleChange('education', value)}
+                                options={educationLevels}
                                 value={formData.education}
-                                onChange={handleChange}
-                                className="mt-[13px] h-[44px] block w-full max-w-[464px] px-3 py-2 border border-[#DBDBDB] rounded-[7px] focus:outline-none focus:ring-[#2A5AB8] focus:border-[#2A5AB8]"
+                                placeholder="Выберите уровень образования"
                             />
                         </div>
                         <div className="mb-4">
                             <label className="block text-gray-700">Какие у вас навыки?</label>
-                            <div className="flex flex-wrap gap-2 mt-2 mb-[10px]">
-                                {skills.map((skill, index) => (
-                                    <div key={index} className="bg-blue-100 text-blue-600 px-2 py-1 rounded flex items-center">
-                                        {skill}
-                                        <button
-                                            type="button"
-                                            className="ml-2 text-red-600"
-                                            onClick={() => removeSkill(index)}
-                                        >
-                                            &times;
-                                        </button>
-                                    </div>
-                                ))}
-                            </div>
-                            <input
-                                type="text"
-                                value={skillInput}
-                                onChange={handleSkillInputChange}
-                                onKeyDown={handleSkillInputKeyDown}
-                                className="h-[44px] px-3 py-2 border w-full max-w-[465px] border-[#DBDBDB] rounded-[7px] focus:outline-none focus:ring-[#2A5AB8] focus:border-[#2A5AB8]"
+                            <Select
+                                mode="tags"
+                                style={{ width: '100%', height: '44px' }}
+                                onChange={handleSkillChange}
+                                value={formData.skills}
+                                tokenSeparators={[',']}
+                                options={skillsOptions}
                                 placeholder="Введите навык и нажмите Enter"
                             />
                         </div>
@@ -261,23 +245,20 @@ const ResumeForm: React.FC = () => {
                                 type="text"
                                 name="nationality"
                                 value={formData.nationality}
-                                onChange={handleChange}
+                                onChange={(e) => handleChange('nationality', e.target.value)}
                                 className="mt-[13px] h-[44px] block w-full max-w-[464px] px-3 py-2 border border-[#DBDBDB] rounded-[7px] focus:outline-none focus:ring-[#2A5AB8] focus:border-[#2A5AB8]"
                             />
                         </div>
                         <div className="mb-4">
                             <label className="block text-gray-700">Есть ли у вас инвалидность?</label>
-                            <input
-                                type="text"
-                                name="disability"
-                                value={formData.disability}
-                                onChange={handleChange}
-                                className="mt-[13px] h-[44px] block w-full max-w-[464px] px-3 py-2 border border-[#DBDBDB] rounded-[7px] focus:outline-none focus:ring-[#2A5AB8] focus:border-[#2A5AB8]"
-                            />
+                            <Radio.Group onChange={handleDisabilitiesChange} value={formData.disabilities ? 'yes' : 'no'}>
+                                <Radio value="yes">Да</Radio>
+                                <Radio value="no">Нет</Radio>
+                            </Radio.Group>
                         </div>
 
                         <h2 className="text-xl font-bold mb-4">Расскажите про свой рабочий опыт</h2>
-                        {workExperience.map((experience, index) => (
+                        {formData.workExperience.map((experience, index) => (
                             <div key={index} className="mb-4 border p-4 rounded">
                                 <div className="mb-2">
                                     <label className="block">Название компании</label>
@@ -285,26 +266,24 @@ const ResumeForm: React.FC = () => {
                                         type="text"
                                         name="companyName"
                                         value={experience.companyName}
-                                        onChange={(e) => handleWorkExperienceChange(index, e)}
+                                        onChange={(e) => handleWorkExperienceChange(index, 'companyName', e.target.value)}
                                         className="mt-[13px] h-[44px] block w-full max-w-[464px] px-3 py-2 border border-[#DBDBDB] rounded-[7px] focus:outline-none focus:ring-[#2A5AB8] focus:border-[#2A5AB8]"
                                     />
                                 </div>
                                 <div className="mb-2">
                                     <label className="block">В какой период вы работали?</label>
-                                    <input
-                                        type="text"
-                                        name="workPeriod"
-                                        value={experience.workPeriod}
-                                        onChange={(e) => handleWorkExperienceChange(index, e)}
-                                        className="mt-[13px] h-[44px] block w-full max-w-[464px] px-3 py-2 border border-[#DBDBDB] rounded-[7px] focus:outline-none focus:ring-[#2A5AB8] focus:border-[#2A5AB8]"
+                                    <RangePicker
+                                        onChange={(dates, dateStrings) => handleWorkExperienceChange(index, 'workPeriod', dateStrings)}
+                                        format="YYYY-MM-DD"
+                                        className="w-full max-w-[464px] h-[44px]"
                                     />
                                 </div>
                                 <div className="mb-2">
                                     <label className="block">Расскажите про ваши обязанности и достижения</label>
                                     <textarea
-                                        name="workDetails"
-                                        value={experience.workDetails}
-                                        onChange={(e) => handleWorkExperienceChange(index, e)}
+                                        name="description"
+                                        value={experience.description}
+                                        onChange={(e) => handleWorkExperienceChange(index, 'description', e.target.value)}
                                         className="mt-[13px] h-[88px] block w-full max-w-[464px] px-3 py-2 border border-[#DBDBDB] rounded-[7px] focus:outline-none focus:ring-[#2A5AB8] focus:border-[#2A5AB8]"
                                     />
                                 </div>
@@ -330,16 +309,16 @@ const ResumeForm: React.FC = () => {
                             <h2 className="text-xl font-bold mb-4">Этапы создания</h2>
                             <ul>
                                 <li className="mb-2 flex items-center">
-                                    <div className={`w-[24px] h-[24px] flex justify-center items-center font-bold rounded-full ${name ? 'bg-[#2A5AB8] text-white' : 'bg-gray-400 text-gray-600'}`}>
+                                    <div className={`w-[24px] h-[24px] flex justify-center items-center font-bold rounded-full ${formData.fio ? 'bg-[#2A5AB8] text-white' : 'bg-gray-400 text-gray-600'}`}>
                                         1
                                     </div>
-                                    <span className={`ml-2 ${name ? 'text-[#2A5AB8]' : 'text-gray-500'}`}>Основная информация</span>
+                                    <span className={`ml-2 ${formData.fio ? 'text-[#2A5AB8]' : 'text-gray-500'}`}>Основная информация</span>
                                 </li>
                                 <li className="mb-2 flex items-center">
-                                    <div className={`w-[24px] h-[24px] flex justify-center items-center font-bold rounded-full ${gender ? 'bg-[#2A5AB8] text-white' : 'bg-gray-400 text-gray-600'}`}>
+                                    <div className={`w-[24px] h-[24px] flex justify-center items-center font-bold rounded-full ${formData.gender ? 'bg-[#2A5AB8] text-white' : 'bg-gray-400 text-gray-600'}`}>
                                         2
                                     </div>
-                                    <span className={`ml-2 ${gender ? 'text-[#2A5AB8]' : 'text-gray-500'}`}>Контактные данные</span>
+                                    <span className={`ml-2 ${formData.gender ? 'text-[#2A5AB8]' : 'text-gray-500'}`}>Контактные данные</span>
                                 </li>
                                 <li className="mb-2 flex items-center">
                                     <div className={`w-[24px] h-[24px] flex justify-center items-center font-bold rounded-full ${formData.education ? 'bg-[#2A5AB8] text-white' : 'bg-gray-400 text-gray-600'}`}>
@@ -351,20 +330,13 @@ const ResumeForm: React.FC = () => {
                         </div>
                     </div>
                 </div>
-                <header id="main-header" className="flex justify-between items-center">
-                    <div className="flex items-center gap-[10px]">
-                        <h1 className="font-bold text-[28px]">Новое резюме</h1>
-                        <span className="mt-[9px] text-[#777777]">последние изменения 16:35 4.06.24</span>
-                    </div>
-                    <div>
-                        <button className="px-[12px] py-[10px] bg-[#DBDBDB] text-black rounded mr-[15px]">Сохранить изменения</button>
-                        <button className={`px-[12px] py-[10px] ${requiredFieldsComplete ? 'bg-[#2A5AB8] text-white' : 'bg-gray-400 text-gray-600 cursor-not-allowed'} rounded`} disabled={!requiredFieldsComplete}>Опубликовать</button>
-                    </div>
-                </header>
             </div>
         </div>
     );
 };
 
 export default ResumeForm;
+
+
+
 

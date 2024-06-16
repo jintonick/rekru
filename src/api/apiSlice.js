@@ -61,6 +61,20 @@ export const apiSlice = createApi({
                 method: 'POST',
             }),
         }),
+        createResume: builder.mutation({
+            query: (resume) => ({
+                url: `resume/new`,
+                method: 'POST',
+                body: JSON.stringify(resume),
+            }),
+        }),
+        filterResume: builder.mutation({
+            query: (filters) => ({
+                url: 'resume/filter',
+                method: 'POST',
+                body: JSON.stringify(filters),
+            }),
+        }),
         getVacancyById: builder.query({
             query: (id) => `vacancy/${id}`,
         }),
@@ -74,7 +88,9 @@ export const {
     useEditVacancyMutation,
     useFilterVacanciesMutation,
     useArchiveVacancyMutation,
+    useFilterResumeMutation,
     useApplyVacancyMutation,
+    useCreateResumeMutation,
     useGetVacancyByIdQuery,
 } = apiSlice;
 

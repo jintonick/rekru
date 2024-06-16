@@ -5,7 +5,7 @@ import app_store from '../imgs/app_store.svg'
 
 const Footer: React.FC = () => {
     return (
-        <footer className="bg-white text-black flex justify-center">
+        <footer className="bg-white text-black flex justify-center z-50">
             <div className="max-w-[1440px] w-full px-[70px] py-[50px]">
                 <div className="flex justify-between w-full items-center max-w-[1440px] border-b border-[#C1C7CD] pb-[36px]">
                     <div className="w-full">

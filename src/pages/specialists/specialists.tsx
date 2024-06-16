@@ -1,19 +1,58 @@
 // ./src/ResumeListing.tsx
-import React, { useState } from 'react';
-import {Button, Checkbox, Pagination, Radio, Select} from 'antd';
-import { resumes } from './data2';
-import search_gray from '../../imgs/search_gray.svg'
-import share from '../../imgs/share.svg'
-import dots_horizontal from '../../imgs/dots-horizontal.svg'
+import React, { useState, useEffect } from 'react';
+import { Button, Checkbox, Pagination, Radio, Select } from 'antd';
+import { useFilterResumeMutation } from '../../api/apiSlice';
+import search_gray from '../../imgs/search_gray.svg';
+import share from '../../imgs/share.svg';
+import dots_horizontal from '../../imgs/dots-horizontal.svg';
+
+interface WorkExperience {
+    position?: string;
+    address?: string;
+    description?: string;
+    period?: string;
+}
+
+interface Resume {
+    id?: number;
+    fio: string;
+    position: string;
+    gender: number;
+    address: string;
+    birth_date: string;
+    phone: string;
+    salary_from: number;
+    salary_to: number;
+    education: string;
+    skills: string[];
+    nationality: string;
+    disabilities: boolean;
+    workExperience?: WorkExperience[];
+}
 
 const ResumeListing: React.FC = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [expandedResume, setExpandedResume] = useState<number | null>(null);
     const resumesPerPage = 5;
-    const paginatedResumes = resumes.slice(
+    const [filteredResumes, setFilteredResumes] = useState<Resume[]>([]);
+    const paginatedResumes = filteredResumes.slice(
         (currentPage - 1) * resumesPerPage,
         currentPage * resumesPerPage
     );
+
+    const [filterResume, { isLoading, isError }] = useFilterResumeMutation();
+
+    useEffect(() => {
+        // Вызовите мутацию для фильтрации резюме
+        filterResume({ education: false })
+            .unwrap()
+            .then((result: Resume[]) => {
+                setFilteredResumes(result); // Предполагается, что результат - это массив резюме
+            })
+            .catch((error: any) => {
+                console.error('Failed to fetch resumes:', error);
+            });
+    }, [filterResume]);
 
     const toggleExpand = (index: number) => {
         setExpandedResume(expandedResume === index ? null : index);
@@ -133,39 +172,39 @@ const ResumeListing: React.FC = () => {
                     <div className="h-screen flex flex-col justify-between">
                         <div>
                             {paginatedResumes.map((resume, index) => (
-                                <div key={index} className="bg-white border-t-[#DBDBDB] border-t-[1px]">
+                                <div key={resume.id} className="bg-white border-t-[#DBDBDB] border-t-[1px]">
                                     <div className="px-[30px] py-[20px]">
                                         <div className="flex justify-between items-center">
-                                            <h2 className="text-[14px] text-[#BBBBBB]">{resume.datePosted}</h2>
+                                            <h2 className="text-[14px] text-[#BBBBBB]">{`пол ${resume.gender}`}</h2>
                                             <div className="flex gap-[10px]">
                                                 <img src={share} alt="Share" />
                                                 <img src={dots_horizontal} alt="More" />
                                             </div>
                                         </div>
                                         <div className="flex justify-start items-center gap-[8px]">
-                                            <h2 className="text-[22px] font-bold">{resume.name}</h2>
-                                            <span className="text-[#BBBBBB] mt-[5px]">{resume.age} лет</span>
+                                            <h2 className="text-[22px] font-bold">{resume.fio}</h2>
+                                            <span className="text-[#BBBBBB] mt-[5px]">10 лет</span>
                                         </div>
-                                        <h3 className="text-[20px] mb-[30px]">{resume.title}</h3>
+                                        <h3 className="text-[20px] mb-[30px]">{resume.position}</h3>
                                         {expandedResume === index && (
                                             <div className="mb-[30px]">
                                                 <h4 className="font-bold">Опыт работы</h4>
-                                                {resume.workExperience.map((work, i) => (
+                                                {resume.workExperience?.map((work, i) => (
                                                     <div key={i} className="mt-2">
                                                         <h5 className="font-semibold">{work.position}</h5>
-                                                        <p className="text-[#777777]">{work.company}</p>
-                                                        <p className="text-[#777777]">{work.period}</p>
+                                                        <p className="text-[#777777]">{work.address}</p>
+                                                        <p className="text-[#777777]">2 года</p>
                                                         <p>{work.description}</p>
                                                     </div>
                                                 ))}
                                             </div>
                                         )}
-                                        <div className="text-[#777777] mb-[30px]">{resume.experience}</div>
+                                        <div className="text-[#777777] mb-[30px]">{resume.education}</div>
                                         <div className="flex flex-wrap gap-[10px] my-[30px]">
-                                            {resume.tags.map((tag, i) => (
+                                            {resume.skills.map((tag, i) => (
                                                 <span key={i} className="bg-[#F7F7F7] px-[12px] py-[10px] rounded-[5px]">
-                                            {tag}
-                                        </span>
+                                                    {tag}
+                                                </span>
                                             ))}
                                         </div>
                                         <div className="flex justify-between">
@@ -189,7 +228,7 @@ const ResumeListing: React.FC = () => {
                             <Pagination
                                 current={currentPage}
                                 pageSize={resumesPerPage}
-                                total={resumes.length}
+                                total={filteredResumes.length}
                                 onChange={page => setCurrentPage(page)}
                             />
                         </div>
