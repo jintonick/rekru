@@ -130,7 +130,7 @@ const ResumeListing: React.FC = () => {
                         </ul>
                     </div>
                 </div>
-                <div className="h-full bg-white w-full rounded-[12px] py-[30px]">
+                <div className="h-full bg-white min-h-screen w-full rounded-[12px] py-[30px]">
                     <header className="px-[30px]">
                         <div className="flex gap-[8px] items-end mb-[20px]">
                             <h1 className="text-[28px] font-bold">Лучшие специалисты</h1>
@@ -169,7 +169,7 @@ const ResumeListing: React.FC = () => {
                             ]}
                         />
                     </div>
-                    <div className="h-screen flex flex-col justify-between">
+                    <div className="min-h-screen flex flex-col justify-between">
                         <div>
                             {paginatedResumes.map((resume, index) => (
                                 <div key={resume.id} className="bg-white border-t-[#DBDBDB] border-t-[1px]">
