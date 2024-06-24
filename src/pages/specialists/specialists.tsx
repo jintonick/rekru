@@ -1,6 +1,6 @@
 // ./src/ResumeListing.tsx
 import React, { useState, useEffect } from 'react';
-import { Button, Checkbox, Pagination, Radio, Select } from 'antd';
+import {Button, Checkbox, message, Pagination, Radio, Select} from 'antd';
 import { useFilterResumeMutation } from '../../api/apiSlice';
 import search_gray from '../../imgs/search_gray.svg';
 import share from '../../imgs/share.svg';
@@ -35,6 +35,10 @@ const ResumeListing: React.FC = () => {
     const [expandedResume, setExpandedResume] = useState<number | null>(null);
     const resumesPerPage = 5;
     const [filteredResumes, setFilteredResumes] = useState<Resume[]>([]);
+    const [messageApi, contextHolder] = message.useMessage();
+    const info = () => {
+        messageApi.info('Cори, эта функция очень дорогая, а у нас нет столько времени');
+    };
     const paginatedResumes = filteredResumes.slice(
         (currentPage - 1) * resumesPerPage,
         currentPage * resumesPerPage
@@ -60,6 +64,7 @@ const ResumeListing: React.FC = () => {
 
     return (
         <div className="w-full flex justify-center mb-[80px]">
+            {contextHolder}
             <div className="w-full flex justify-between gap-[20px] max-w-[1440px] px-[70px] text-[16px]">
                 <div className="bg-white w-full max-w-[307px] h-full rounded-[12px] p-[20px]">
                     <div className="mb-[20px]">
@@ -142,7 +147,7 @@ const ResumeListing: React.FC = () => {
                                 placeholder="Иван Иванов или Маркетолог 2 года опыта Москва офис"
                                 className="w-full h-[44px] px-4 py-[8px] bg-[#F7F7F7] rounded-[7px]"
                             />
-                            <button className="h-[44px] w-[83px] bg-[#2A5AB8] text-white rounded-[7px]">
+                            <button className="h-[44px] w-[83px] bg-[#2A5AB8] text-white rounded-[7px]" onClick={info}>
                                 Поиск
                             </button>
                         </div>
@@ -209,8 +214,8 @@ const ResumeListing: React.FC = () => {
                                         </div>
                                         <div className="flex justify-between">
                                             <div className="flex gap-[15px]">
-                                                <button className="w-[118px] h-[44px] text-white bg-[#2A5AB8] rounded-[7px]">Написать</button>
-                                                <button className="w-[95px] h-[44px] bg-[#DBDBDB] rounded-[7px]">Сохранить</button>
+                                                <button className="w-[118px] h-[44px] text-white bg-[#2A5AB8] rounded-[7px]" onClick={info}>Написать</button>
+                                                <button className="w-[95px] h-[44px] bg-[#DBDBDB] rounded-[7px]" onClick={info}>Сохранить</button>
                                             </div>
                                             <Button
                                                 type="link"

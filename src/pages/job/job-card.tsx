@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import share from '../../imgs/share.svg';
 import dots_horizontal from '../../imgs/dots-horizontal.svg';
-import {Button} from "antd";
+import {Button, message} from "antd";
 
 export type Job = {
     id?: number;
@@ -31,10 +31,15 @@ const employmentTypes: { [key: number]: string } = {
 };
 
 const JobCard: React.FC<JobCardProps> = ({ job, alwaysOpen = false }) => {
+    const [messageApi, contextHolder] = message.useMessage();
+    const info = () => {
+        messageApi.info('Cори, эта функция очень дорогая, а у нас нет столько времени');
+    };
     const [isOpen, setIsOpen] = useState(alwaysOpen);
 
     return (
         <div className="bg-white px-[30px] py-[20px] rounded-[12px]">
+            {contextHolder}
             <div className="flex justify-between items-center">
                 <h2 className="text-[14px] text-[#BBBBBB]"></h2>
                 <div className="flex gap-[10px]">
@@ -71,12 +76,12 @@ const JobCard: React.FC<JobCardProps> = ({ job, alwaysOpen = false }) => {
                 {alwaysOpen ?
                     <div className="flex justify-between w-full gap-[15px]">
                         <div className="flex gap-[15px]">
-                            <button className="h-[44px] py-[10px] px-[12px] text-white bg-[#2A5AB8] rounded-[7px]">Отредактировать</button>
-                            <button className="py-[10px] px-[12px]  h-[44px] bg-[#DBDBDB] rounded-[7px]">Архивировать</button>
-                            <button className="py-[10px] px-[12px]  h-[44px] bg-[#DBDBDB] rounded-[7px]">Сохранить</button>
+                            <button className="h-[44px] py-[10px] px-[12px] text-white bg-[#2A5AB8] rounded-[7px]" onClick={info}>Отредактировать</button>
+                            <button className="py-[10px] px-[12px]  h-[44px] bg-[#DBDBDB] rounded-[7px]" onClick={info}>Архивировать</button>
+                            <button className="py-[10px] px-[12px]  h-[44px] bg-[#DBDBDB] rounded-[7px]" onClick={info}>Сохранить</button>
                         </div>
                         <div>
-                            <button className="w-[95px] h-[44px] bg-[#B82A2A] rounded-[7px] text-white">Удалить</button>
+                            <button className="w-[95px] h-[44px] bg-[#B82A2A] rounded-[7px] text-white" onClick={info}>Удалить</button>
                         </div>
                     </div>
                     :

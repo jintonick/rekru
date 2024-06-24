@@ -9,7 +9,7 @@ import {Avatar} from "antd";
 
 function NewsCard() {
     return(
-        <div className="flex flex-col justify-start px-[30px] border-t-[1px] rounded-[7px]">
+        <div className="flex flex-col justify-start px-[30px] h-screen border-t-[1px] rounded-[7px]">
             <div className="flex justify-between items-center">
                 <div className='flex items-center h-full gap-[8px] my-[10px]'>
                     <Avatar icon={<UserOutlined />} />

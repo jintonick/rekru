@@ -10,7 +10,7 @@ import NewsCard from "../../components/news_card";
 
 const News: React.FC = () => {
     return (
-        <div className="h-screen w-full flex justify-start items-start">
+        <div className="min-h-screen w-full flex justify-start items-start">
             <div className="container mx-auto flex justify-between items-start max-w-[1440px] px-[68px]">
                 <div className="mt-[20px]">
                     <Navbar />

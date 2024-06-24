@@ -7,6 +7,7 @@ import calendar from '../../imgs/calendar.svg'
 import arrdown from '../../imgs/arr_down.svg'
 import informationcircle from '../../imgs/information-circle.svg'
 import {useAuth} from "../../auth/auth_context";
+import {message} from "antd";
 
 interface Company {
     name: string;
@@ -24,34 +25,39 @@ const companies: Company[] = [
 ];
 function NavBar(){
     const [showAll, setShowAll] = useState(false);
+    const [messageApi, contextHolder] = message.useMessage();
+    const info = () => {
+        messageApi.info('Cори, эта функция очень дорогая, а у нас нет столько времени');
+    };
     const { isLoggedIn } = useAuth();
 
     const displayedCompanies = showAll ? companies : companies.slice(0, 4);
     return(
         <div>
+            {contextHolder}
             {isLoggedIn ? (
             <div className=" w-[243px] h-[284px] flex flex-col justify-between py-[12px]">
-                <button className="ml-[14px] flex justify-start items-center">
+                <button className="ml-[14px] flex justify-start items-center" onClick={info}>
                     <img className='mr-[8px]' src={list}/>
                     <p>Мои подписки</p>
                 </button>
-                <button className="ml-[14px] flex justify-start items-center">
+                <button className="ml-[14px] flex justify-start items-center" onClick={info}>
                     <img className='mr-[8px]' src={heart}/>
                     <p>Популярное</p>
                 </button>
-                <button className="ml-[14px] flex justify-start items-center">
+                <button className="ml-[14px] flex justify-start items-center" onClick={info}>
                     <img className='mr-[8px]' src={clock}/>
                     <p>Новое</p>
                 </button>
-                <button className="ml-[14px]  flex justify-start items-center">
+                <button className="ml-[14px]  flex justify-start items-center" onClick={info}>
                     <img className='mr-[8px]' src={officebuilding}/>
                     <p>Компании</p>
                 </button>
-                <button className="ml-[14px]  flex justify-start items-center">
+                <button className="ml-[14px]  flex justify-start items-center" onClick={info}>
                     <img className='mr-[8px]' src={calendar}/>
                     <p>События</p>
                 </button>
-                <button className="ml-[14px]  flex justify-start items-center">
+                <button className="ml-[14px]  flex justify-start items-center" onClick={info}>
                     <img className='mr-[8px]' src={informationcircle}/>
                     <p>Поддержка</p>
                 </button>
@@ -88,7 +94,7 @@ function NavBar(){
                     </button>
                 </div>
             </div>
-            <h1 className="mt-[20px] font-bold text-[#213A8B]">Оформить подписку</h1>
+            <button className="mt-[20px] font-bold text-[#213A8B]" onClick={info}>Оформить подписку</button>
         </div>
     )
 }

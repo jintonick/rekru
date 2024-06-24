@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserOutlined, LogoutOutlined } from '@ant-design/icons';
-import { Avatar, Button, Dropdown, Menu } from 'antd';
+import {Avatar, Button, Dropdown, Menu, message} from 'antd';
 import list from '../imgs/list.svg';
 import resume from '../imgs/resume.svg';
 import log_out from '../imgs/log-out.svg';
@@ -15,6 +15,10 @@ import { useAuth } from '../auth/auth_context';
 
 const Header: React.FC = () => {
     const { isLoggedIn, logout } = useAuth();
+    const [messageApi, contextHolder] = message.useMessage();
+    const info = () => {
+        messageApi.info('Cори, эта функция очень дорогая, а у нас нет столько времени');
+    };
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -45,6 +49,7 @@ const Header: React.FC = () => {
 
     return (
         <div className="flex flex-col justify-center items-center w-full">
+            {contextHolder}
             {isLoggedIn ? (
                 <header className="flex w-full justify-between items-center px-[68px] py-[16px] max-w-[1440px]">
                     <Link className="text-[#2A5AB8] text-[36px] font-extrabold" to={"/news"}>rekru</Link>
@@ -70,7 +75,7 @@ const Header: React.FC = () => {
                                 <img className="mt-[2px]" src={mail} alt='mail'/>
                                 <p className="mt-[5px]">Сообщения</p>
                             </Link>
-                            <button className="h-[42px] flex flex-col justify-between items-center" disabled>
+                            <button className="h-[42px] flex flex-col justify-between items-center" onClick={info}>
                                 <img className="mt-[2px]" src={bell} alt='bell'/>
                                 <p className="mt-[5px]">Уведомления</p>
                             </button>

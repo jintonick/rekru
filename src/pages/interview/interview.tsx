@@ -5,7 +5,7 @@ import { useGetVacancyByIdQuery, useResponseQuery, useFilterResumeMutation } fro
 import sparkles from '../../imgs/sparkles.svg';
 import dots_horizontal from '../../imgs/dots-horizontal.svg';
 import share from '../../imgs/share.svg';
-import { Select, Button } from 'antd';
+import { Select, Button, message } from 'antd';
 import StageList from './components/stage_list';
 import { stages as initialStages } from './data3';
 
@@ -61,6 +61,10 @@ const Interview: React.FC = () => {
     const [stageNameEdit, setStageNameEdit] = useState<string>('');
     const [isSalaryVisible, setIsSalaryVisible] = useState(false);
     const [stages, setStages] = useState<Stage[]>([]);
+    const [messageApi, contextHolder] = message.useMessage();
+    const info = () => {
+        messageApi.info('Cори, эта функция очень дорогая, а у нас нет столько времени');
+    };
 
     useEffect(() => {
         filterResume({ education: false })
@@ -159,6 +163,7 @@ const Interview: React.FC = () => {
 
     return (
         <div className="w-full min-h-screen flex justify-center px-[70px] gap-[28px] my-[20px]">
+            {contextHolder}
             <div className="w-full max-w-[773px] min-h-screen rounded-[12px]">
                 {job && <JobCard job={job} alwaysOpen />}
                 <div className="px-[30px] bg-white rounded-[12px] mt-[30px]">
@@ -252,8 +257,8 @@ const Interview: React.FC = () => {
                                 </div>
                                 <div className="flex justify-between">
                                     <div className="flex gap-[15px]">
-                                        <button className="w-[118px] h-[44px] text-white bg-[#2A5AB8] rounded-[7px]">Написать</button>
-                                        <button className="w-[95px] h-[44px] bg-[#DBDBDB] rounded-[7px]">Сохранить</button>
+                                        <button className="w-[118px] h-[44px] text-white bg-[#2A5AB8] rounded-[7px]" onClick={info}>Написать</button>
+                                        <button className="w-[95px] h-[44px] bg-[#DBDBDB] rounded-[7px]" onClick={info}>Сохранить</button>
                                     </div>
                                     <Button
                                         type="link"
