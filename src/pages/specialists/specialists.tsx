@@ -194,7 +194,7 @@ const ResumeListing: React.FC = () => {
                                         {expandedResume === index && (
                                             <div className="mb-[30px]">
                                                 <h4 className="font-bold">Опыт работы</h4>
-                                                {resume.workExperience?.map((work, i) => (
+                                                {resume?.workExperience?.map((work, i) => (
                                                     <div key={i} className="mt-2">
                                                         <h5 className="font-semibold">{work.position}</h5>
                                                         <p className="text-[#777777]">{work.address}</p>
@@ -206,7 +206,7 @@ const ResumeListing: React.FC = () => {
                                         )}
                                         <div className="text-[#777777] mb-[30px]">{resume.education}</div>
                                         <div className="flex flex-wrap gap-[10px] my-[30px]">
-                                            {resume.skills.map((tag, i) => (
+                                            {resume?.skills?.map((tag, i) => (
                                                 <span key={i} className="bg-[#F7F7F7] px-[12px] py-[10px] rounded-[5px]">
                                                     {tag}
                                                 </span>
