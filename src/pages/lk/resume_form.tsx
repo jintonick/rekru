@@ -152,6 +152,7 @@ const ResumeForm: React.FC = () => {
                             <label className="block text-gray-700">Кем хотите работать?</label>
                             <Select
                                 style={{ width: '100%', height: '44px' }}
+                                className="w-full max-w-[464px]"
                                 onChange={(value) => handleChange('position', value)}
                                 options={positionLevels}
                                 value={formData.position}
@@ -237,6 +238,7 @@ const ResumeForm: React.FC = () => {
                             <label className="block text-gray-700">Какое у вас образование?</label>
                             <Select
                                 style={{ width: '100%', height: '44px' }}
+                                className="w-full max-w-[464px]"
                                 onChange={(value) => handleChange('education', value)}
                                 options={educationLevels}
                                 value={formData.education}
@@ -247,6 +249,7 @@ const ResumeForm: React.FC = () => {
                             <label className="block text-gray-700">Какие у вас навыки?</label>
                             <Select
                                 mode="tags"
+                                className="w-full max-w-[464px]"
                                 style={{ width: '100%', height: '44px' }}
                                 onChange={handleSkillChange}
                                 value={formData.skills}
