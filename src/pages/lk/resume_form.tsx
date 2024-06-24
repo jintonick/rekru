@@ -1,26 +1,37 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Radio, DatePicker, Select } from "antd";
+import { Button, Radio, DatePicker, Select, message  } from "antd";
 import { useCreateResumeMutation } from '../../api/apiSlice';
 import moment from 'moment';
 
 const { RangePicker } = DatePicker;
 
 const educationLevels = [
-    { label: "Среднее", value: 1 },
-    { label: "Среднее специальное", value: 2 },
-    { label: "Неоконченное высшее", value: 3 },
-    { label: "Высшее", value: 4 },
-    { label: "Бакалавр", value: 5 },
-    { label: "Магистр", value: 6 },
-    { label: "Кандидат наук", value: 7 },
-    { label: "Доктор наук", value: 8 }
+    { label: "Среднее", value: "Среднее" },
+    { label: "Среднее специальное", value: "Среднее специальное" },
+    { label: "Неоконченное высшее", value: "Неоконченное высшее" },
+    { label: "Высшее", value: "Высшее" },
+    { label: "Бакалавр", value: "Бакалавр" },
+    { label: "Магистр", value: "Магистр" },
+    { label: "Кандидат наук", value: "Кандидат наук" },
+    { label: "Доктор наук", value: "Доктор наук" }
+];
+
+const positionLevels = [
+    { label: "Аналитик", value: 1 },
+    { label: "Dev-Ops", value: 2 },
+    { label: "Team leed", value: 3 },
+    { label: "Phyton Разработчик", value: 4 },
+    { label: "Системный инженер", value: 5 },
+    { label: "Тестировщик", value: 6 },
 ];
 
 const skillsOptions = [
-    "Python", "SQL", "PostgreSQL", "Английский язык", "Redis", "Django",
-    "FastAPI", "RabbitMQ", "aiohttp", "Kafka", "Docker", "grafana",
-    "prometheus", "pytest", "Git", "Linux", "Web Scrapping", "SQLAlchemy",
-    "REST API", "machine learning"
+    'Agile', 'Apache Kafka', 'Bash', 'BI', 'Bug Fix', 'CI/CD', 'DHCP', 'Django',
+    'Docker', 'English', 'Flask', 'Git', 'Grafana', 'Hadoop', 'Java', 'Jira',
+    'JS', 'LAN', 'Linux', 'Machine Learning', 'pandas', 'Personal Learning',
+    'Project Management', 'Python', 'Pytest', 'R&D', 'Review', 'Spark', 'SQL',
+    'System Architecture', 'TCP/IP', 'Test Case', 'Time Management', 'Unit Test',
+    'Web Programming', 'Windows', 'YAML'
 ].map(skill => ({ label: skill, value: skill }));
 
 interface WorkExperience {
@@ -31,6 +42,7 @@ interface WorkExperience {
 }
 
 const ResumeForm: React.FC = () => {
+    const [messageApi, contextHolder] = message.useMessage();
     const [isHeaderFixed, setIsHeaderFixed] = useState(false);
     const [formData, setFormData] = useState({
         fio: '',
@@ -48,6 +60,9 @@ const ResumeForm: React.FC = () => {
         workExperience: [{ companyName: '', timeFrom: '1966-03-03T00:06:56.52Z', timeTo: '1966-04-03T00:06:56.52Z', description: '' }]
     });
     const [createResume] = useCreateResumeMutation();
+    const info = () => {
+        messageApi.info('Cори, эта функция очень дорогая, а у нас нет столько времени');
+    };
 
     const handleChange = (name: string, value: any) => {
         setFormData({ ...formData, [name]: value });
@@ -117,7 +132,8 @@ const ResumeForm: React.FC = () => {
     const requiredFieldsComplete = formData.fio && formData.gender && formData.address && formData.birth_date;
 
     return (
-        <div className="w-full flex justify-center min-h-screen">
+        <div className="w-full flex justify-center min-h-screen py-[30px] px-[48px] rounded-[7px] bg-white">
+            {contextHolder}
             <div className="w-full max-w-[1440px] text-[16px]">
                 <header id="main-header" className="flex justify-between items-center mb-[30px]">
                     <div className="flex items-center gap-[10px]">
@@ -125,7 +141,7 @@ const ResumeForm: React.FC = () => {
                         <span className="mt-[9px] text-[#777777]">последние изменения 16:35 4.06.24</span>
                     </div>
                     <div>
-                        <button className="px-[12px] py-[10px] bg-[#DBDBDB] text-black rounded mr-[15px]">Сохранить изменения</button>
+                        <button className="px-[12px] py-[10px] bg-[#DBDBDB] text-black rounded mr-[15px]" onClick={info}>Сохранить изменения</button>
                         <button onClick={handleSubmit} className={`px-[12px] py-[10px] ${requiredFieldsComplete ? 'bg-[#2A5AB8] text-white' : 'bg-gray-400 text-gray-600 cursor-not-allowed'} rounded`} disabled={!requiredFieldsComplete}>Опубликовать</button>
                     </div>
                 </header>
@@ -133,13 +149,13 @@ const ResumeForm: React.FC = () => {
                     <form className="pr-[130px]">
                         <h1 className="text-[28px] font-bold mb-[40px]">Заполните основную информацию</h1>
                         <div className="mb-4">
-                            <label className="block">Кем хотите работать?</label>
-                            <input
-                                type="text"
-                                name="position"
+                            <label className="block text-gray-700">Кем хотите работать?</label>
+                            <Select
+                                style={{ width: '100%', height: '44px' }}
+                                onChange={(value) => handleChange('position', value)}
+                                options={positionLevels}
                                 value={formData.position}
-                                onChange={(e) => handleChange('position', e.target.value)}
-                                className="mt-[13px] h-[44px] block w-full max-w-[464px] px-3 py-2 border border-[#DBDBDB] rounded-[7px] focus:outline-none focus:ring-[#2A5AB8] focus:border-[#2A5AB8]"
+                                placeholder="Выберете должность"
                             />
                         </div>
                         <div className="mb-4">

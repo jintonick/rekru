@@ -15,6 +15,7 @@ const JobForm: React.FC = () => {
         experience: '',
         description: '',
         employment_type: '',
+        user_type: '1',
         skills: []
     });
 
@@ -121,6 +122,75 @@ const JobForm: React.FC = () => {
                                 onChange={handleChange}
                                 className="mt-[13px] h-[44px] block w-full max-w-[464px] px-3 py-2 border border-[#DBDBDB] rounded-[7px] focus:outline-none focus:ring-[#2A5AB8] focus:border-[#2A5AB8]"
                             />
+                        </div>
+                        <label className="block my-[10px]">Тип Специалиста</label>
+                        <div className="mt-1 flex flex-col">
+                            <label className="inline-flex items-center">
+                                <input
+                                    type="radio"
+                                    name="user_type"
+                                    value="1"
+                                    checked={formData.user_type === "1"}
+                                    onChange={handleChange}
+                                    className="form-radio"
+                                />
+                                <span className="ml-2">Аналитик</span>
+                            </label>
+                            <label className="inline-flex items-center">
+                                <input
+                                    type="radio"
+                                    name="user_type"
+                                    value="2"
+                                    checked={formData.user_type === "2"}
+                                    onChange={handleChange}
+                                    className="form-radio"
+                                />
+                                <span className="ml-2">Dev-ops</span>
+                            </label>
+                            <label className="inline-flex items-center">
+                                <input
+                                    type="radio"
+                                    name="user_type"
+                                    value="3"
+                                    checked={formData.user_type === "3"}
+                                    onChange={handleChange}
+                                    className="form-radio"
+                                />
+                                <span className="ml-2">Team Leed</span>
+                            </label>
+                            <label className="inline-flex items-center">
+                                <input
+                                    type="radio"
+                                    name="user_type"
+                                    value="4"
+                                    checked={formData.user_type === "4"}
+                                    onChange={handleChange}
+                                    className="form-radio"
+                                />
+                                <span className="ml-2">Системный инженер</span>
+                            </label>
+                            <label className="inline-flex items-center">
+                                <input
+                                    type="radio"
+                                    name="user_type"
+                                    value="4"
+                                    checked={formData.user_type === "5"}
+                                    onChange={handleChange}
+                                    className="form-radio"
+                                />
+                                <span className="ml-2">Phyton разработчки</span>
+                            </label>
+                            <label className="inline-flex items-center">
+                                <input
+                                    type="radio"
+                                    name="user_type"
+                                    value="4"
+                                    checked={formData.user_type === "6"}
+                                    onChange={handleChange}
+                                    className="form-radio"
+                                />
+                                <span className="ml-2">Тестировщик</span>
+                            </label>
                         </div>
                         <div className="mb-4">
                             <label className="block text-gray-700">В каком городе ищем сотрудника?</label>

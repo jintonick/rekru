@@ -75,6 +75,9 @@ export const apiSlice = createApi({
                 body: JSON.stringify(filters),
             }),
         }),
+        response: builder.query({
+            query: (id) => `response/${id}`,
+        }),
         getVacancyById: builder.query({
             query: (id) => `vacancy/${id}`,
         }),
@@ -91,6 +94,7 @@ export const {
     useFilterResumeMutation,
     useApplyVacancyMutation,
     useCreateResumeMutation,
+    useResponseQuery,
     useGetVacancyByIdQuery,
 } = apiSlice;
 

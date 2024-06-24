@@ -84,12 +84,12 @@ const JobUser: React.FC = () => {
 
                     <div className="relative">
                         <button
-                            className="w-full h-[44px] bg-white rounded-[7px] focus:outline-none"
+                            className="w-full min-w-[150px] h-[44px] text-[13px] border-[1px] border-gray-300 px-[12px] bg-white rounded-[7px] focus:outline-none"
                             onClick={() => setIsSalaryVisible(!isSalaryVisible)}
                         >
                             Заработная плата
                         </button>
-                        <div className={`transition-all border-[1px] duration-500 ease-in-out ${isSalaryVisible ? 'max-h-screen' : 'max-h-0 overflow-hidden'}`}>
+                        <div className={`transition-all absolute duration-500 ease-in-out ${isSalaryVisible ? 'max-h-screen' : 'max-h-0 overflow-hidden'}`}>
                             <div className="bg-white p-4 w-[150px] border-[1px] rounded-[7px] shadow-md mt-2">
                                 <div className="flex flex-col ">
                                     <input

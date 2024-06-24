@@ -53,6 +53,7 @@ const ResumeCard: React.FC<ResumeCardProps> = ({ resume, index, expandedResume, 
                 <div className="flex justify-between items-center mb-[20px]">
                     <div className="flex gap-[15px]">
                         <button className="px-[12px] py-[10px] h-[44px] text-white bg-[#2A5AB8] rounded-[7px]">Пригласить на первый этап</button>
+                        <button className="px-[12px] py-[10px] h-[44px] text-white bg-[#B82A2A] rounded-[7px]">Отказать</button>
                     </div>
                     <Button
                         type="link"

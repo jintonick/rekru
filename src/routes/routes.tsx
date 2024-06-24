@@ -3,9 +3,11 @@ import News from "../pages/start_page/news";
 import Main from "../pages/start_page/main";
 import Job from "../pages/job/job";
 import JobForm from "../pages/job/job_form";
+import Chat from "../pages/chat/chat";
 import Interview from "../pages/interview/interview";
 import { Route, Routes } from "react-router-dom";
 import ResumeListing from "../pages/specialists/specialists";
+import Profile from "../pages/lk/prifile";
 import Lk from "../pages/lk/lk";
 
 function AppRoutes(){
@@ -18,6 +20,8 @@ function AppRoutes(){
             <Route path='/spec' element={<ResumeListing />}/>
             <Route path='/interview/:id' element={<Interview />} />
             <Route path='/lk' element={<Lk />} />
+            <Route path='/chat' element={<Chat />} />
+            <Route path='/profile' element={<Profile/>} />
         </Routes>
     )
 }

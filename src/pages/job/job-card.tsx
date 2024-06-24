@@ -34,7 +34,7 @@ const JobCard: React.FC<JobCardProps> = ({ job, alwaysOpen = false }) => {
     const [isOpen, setIsOpen] = useState(alwaysOpen);
 
     return (
-        <div className="bg-white px-[30px] py-[20px] rounded-[10px]">
+        <div className="bg-white px-[30px] py-[20px] rounded-[12px]">
             <div className="flex justify-between items-center">
                 <h2 className="text-[14px] text-[#BBBBBB]"></h2>
                 <div className="flex gap-[10px]">
@@ -45,7 +45,7 @@ const JobCard: React.FC<JobCardProps> = ({ job, alwaysOpen = false }) => {
             <h2 className="text-[22px] font-bold">{job.name}</h2>
             <div className="text-[20px] mb-[30px]">{job.salary_from}-{job.salary_to}</div>
             <div className="text-[#777777]">{job.city}, {employmentTypes[job.employment_type ?? 0]}</div>
-            {isOpen && (
+            {!alwaysOpen && isOpen && (
                 <div className="my-[20px]">
                     <div className="flex items-center jusify-start h-full w-full gap-[12px]">
                         <div className="w-[64px] h-[64px] bg-[#2A5AB8] rounded-full"></div>

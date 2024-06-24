@@ -229,8 +229,8 @@ function JobAdmin() {
                                     <p className="truncate">{job.city}</p>
                                     <p className="mt-[20px] truncate">{`${job.salary_from} - ${job.salary_to}`}</p>
                                 </div>
-                                <div>{'job.lastUpdated'}</div>
-                                <div>{'job.status'}</div>
+                                <div>2024.06.29</div>
+                                <div>Активен</div>
                                 <Button type="link">
                                     <Link className="text-[#2A5AB8] text-[16px] truncate" to={`/interview/${job.id}`}>
                                         Перейти к подбору кандидатов
@@ -239,7 +239,7 @@ function JobAdmin() {
                             </div>
                         ))}
                     </div>
-                    <div className="pt-[5px]">
+                    <div className="pt-[5px] mb-[5px]">
                         {jobs.length > 5 ? (
                             <Pagination
                                 current={currentPage}
